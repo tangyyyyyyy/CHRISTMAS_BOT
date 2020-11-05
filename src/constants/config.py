@@ -3,7 +3,7 @@ from api.spawn import SPAWN_COMMAND_LIST
 from api.user import USER_COMMAND_LIST
 
 DISCORD_CLIENT_ID = '773308497538056222'
-DISCORD_TOKEN = 'NzczMzA4NDk3NTM4MDU2MjIy.X6HVqQ.LiAFUTHJh6PzMVKY7g0GrkRWYW8'
+DISCORD_TOKEN = 'your princess is in another castle'
 
 def load_command_list():
   command_list = {}
