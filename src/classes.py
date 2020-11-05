@@ -1,7 +1,7 @@
-class item:
-  def __init__(self, name, id, img_loc, rarity):
+class Item:
+  def __init__(self, name, item_id, img_loc, rarity):
     self.name = name
-    self.itemID = id
+    self.id = item_id
     self.img_loc = img_loc
     self.rarity = rarity #str
 
@@ -28,12 +28,13 @@ class helper:
     #parse inventory for output of x!inventory (i.e. seperate by rarity)
     pass
 
-class creature:
-  def __init__(self, name, id, img_loc, status):
+class Creature:
+  def __init__(self, name, pronoun, creature_id, img_loc, status):
     self.name = name
-    self.creatureID = id
+    self.id = creature_id
     self.img_loc = img_loc
     self.status = status #naughty, either, nice
+    self.pronoun = pronoun
 
 class leaderboard:
   def __init__(self, participants):

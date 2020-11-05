@@ -1,1 +1,0 @@
-naughtyCorrect = 'You were correct! It was a naughty <character>! As a thanks for your expertise, <she/he/it> gives you <a/an item>. This item is <rarity>. You add it to your inventory.'
