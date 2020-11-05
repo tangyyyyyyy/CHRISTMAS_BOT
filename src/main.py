@@ -23,8 +23,8 @@ class ChristmasBot(discord.Client):
     else:
       response = handle_spawn_chance(message, tokens)
 
-    print("Response: " + str(response) + ' with type ' + str(type(response)))
-    await message.channel.send(response) 
+    if response != '':
+      await message.channel.send(response) 
 
 
 def run():
