@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+#creature_name, creature_pronoun, item_pronoun, item_name, item_rarity, creature_name
 NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in shame... '
                    'Hoping to change fate,'
                     '{creature_pronoun} bribes you with '
@@ -6,37 +6,26 @@ NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in shame.
                     '"Silly {creature_name}, that won\'t get you on the nice list", you think, as you '
                     'chuckle and add it to your inventory.')
 
+#creature_name, caps_creature_pronoun, creature_pronoun, item_pronoun, item_name, item_rarity
 NICE_CORRECT = ('You were correct! It was a nice {creature_name}! {caps_creature_pronoun} beams with pride. '
                 'As a thanks'
                     ' for your good news, {creature_pronoun} gives you '
                     '{item_pronoun} {item_name}. Wow! A {item_rarity} item! '
                     'You check the "extra nice" box on your list and add the item to your inventory.')
 
+#creature_name, caps_creature_pronoun, creature_pronoun, replaced_item
 NAUGHTY_INCORRECT = ('You were wrong! It was a nice {creature_name}! {caps_creature_pronoun} can\'t'
                   'let you down, so they chose to act the part.'
                   '{creature_pronoun) replaces'
                   'your {replaced_item} with coal! The guilt is immense, but it\'s better than letting you'
                   'be wrong ')
 
-NICE_INCORRECT = ('You were wrong! It was a naughty {creature_name}, and {creature_pronoun}'
+#creature_name, caps_creature_pronoun, creature_pronoun, replaced_item
+NICE_INCORRECT = ('You were wrong! It was a naughty {creature_name}. Oh no, {caps_creature_pronoun}'
                   'thinks you were trying to deceive them! In spite, {creature_pronoun) replaces'
                   'your {replaced_item} with coal! Serves you right. ')
-=======
-NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in '
-                    'shame... As a bribe, {creature_pronoun} gives you '
-                    '{item_pronoun} {item_name}. This item is {item_rarity}. '
-                    'Silly creature, that won\'t help, you think, as you '
-                    'avert your eyes and add it to your inventory.')
 
->>>>>>> b7940365b4b67b28359232d919c7b4bfefb6c6a3
-
-NICE_CORRECT = ('You were correct! It was a nice {creature_name}! As thanks'
-                ' for your expertise, {creature_pronoun} gives you '
-                '{item_pronoun} {item_name}. This item is {item_rarity}. '
-                'You add it to your inventory.')
-
-
-HELP_MESSAGE = ('NEED SOME HELP??? HERE ARE OUR COMMANDS:'
+HELP_MESSAGE = ('\nNEED SOME HELP??? HERE ARE OUR COMMANDS:\n\n\n'
         
         'CONFIG/ADMIN:\n\n'
         'x!config enable <channels>\n'
