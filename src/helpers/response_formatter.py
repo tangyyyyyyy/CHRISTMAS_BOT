@@ -14,7 +14,7 @@ def get_item_pronoun(item):
 def format_correct_naughty_response(creature, item):
   return NAUGHTY_CORRECT.format(creature_name=creature.name,
     creature_pronoun=creature.pronoun, item_pronoun=get_item_pronoun(item), 
-    item_name=item.name, item_rarity=item.rarity, creature_name=creature.name)
+    item_name=item.name, item_rarity=item.rarity)
 
 def format_correct_nice_response(creature, item):
   return NICE_CORRECT.format(creature_name=creature.name,

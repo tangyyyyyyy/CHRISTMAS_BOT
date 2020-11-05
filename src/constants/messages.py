@@ -1,6 +1,6 @@
 #creature_name, creature_pronoun, item_pronoun, item_name, item_rarity, creature_name
 NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in shame... '
-                   'Hoping to change fate,'
+                   'Hoping to change fate, '
                     '{creature_pronoun} bribes you with '
                     '{item_pronoun} {item_name}. Only a {item_rarity} item? '
                     '"Silly {creature_name}, that won\'t get you on the nice list", you think, as you '
@@ -25,7 +25,7 @@ NICE_INCORRECT = ('You were wrong! It was a naughty {creature_name}. Oh no, {cap
                   'thinks you were trying to deceive them! In spite, {creature_pronoun) replaces'
                   'your {replaced_item} with coal! Serves you right. ')
 
-HELP_MESSAGE = ('\nNEED SOME HELP??? HERE ARE OUR COMMANDS:\n\n\n'
+HELP_MESSAGE = ('```NEED SOME HELP??? HERE ARE OUR COMMANDS:\n\n\n'
         
         'CONFIG/ADMIN:\n\n'
         'x!config enable <channels>\n'
@@ -59,5 +59,5 @@ HELP_MESSAGE = ('\nNEED SOME HELP??? HERE ARE OUR COMMANDS:\n\n\n'
         '\nResponse: image and string'
         '\n\nx!nice or x!naughty'
         '\nRequest: parameters = <user> who wrote command (string)'
-        '\nResponse: image and string'
+        '\nResponse: image and string```'
         )
