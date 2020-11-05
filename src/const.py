@@ -1,2 +1,2 @@
 clientID = '773308497538056222'
-token = 'NzczMzA4NDk3NTM4MDU2MjIy.X6HVqQ.l4l3EVVwcx_kI99sFnlmc7yPTMo'
+token = ''
