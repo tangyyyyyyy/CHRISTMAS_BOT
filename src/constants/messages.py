@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in shame... '
                    'Hoping to change fate,'
                     '{creature_pronoun} bribes you with '
@@ -20,8 +21,22 @@ NAUGHTY_INCORRECT = ('You were wrong! It was a nice {creature_name}! {caps_creat
 NICE_INCORRECT = ('You were wrong! It was a naughty {creature_name}, and {creature_pronoun}'
                   'thinks you were trying to deceive them! In spite, {creature_pronoun) replaces'
                   'your {replaced_item} with coal! Serves you right. ')
+=======
+NAUGHTY_CORRECT = ('You were correct! {creature_name} hangs their head in '
+                    'shame... As a bribe, {creature_pronoun} gives you '
+                    '{item_pronoun} {item_name}. This item is {item_rarity}. '
+                    'Silly creature, that won\'t help, you think, as you '
+                    'avert your eyes and add it to your inventory.')
 
-HELP = ('NEED SOME HELP??? HERE ARE OUR COMMANDS:'
+>>>>>>> b7940365b4b67b28359232d919c7b4bfefb6c6a3
+
+NICE_CORRECT = ('You were correct! It was a nice {creature_name}! As thanks'
+                ' for your expertise, {creature_pronoun} gives you '
+                '{item_pronoun} {item_name}. This item is {item_rarity}. '
+                'You add it to your inventory.')
+
+
+HELP_MESSAGE = ('NEED SOME HELP??? HERE ARE OUR COMMANDS:'
         
         'CONFIG/ADMIN:\n\n'
         'x!config enable <channels>\n'

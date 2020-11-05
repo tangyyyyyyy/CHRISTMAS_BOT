@@ -1,17 +1,30 @@
 import discord
-from constants.config import DISCORD_TOKEN
-from helpers import formatter
-from classes import Creature, Item
+from constants.config import DISCORD_TOKEN, load_command_list
+from api.spawn import handle_spawn_chance
 
-class ChristmasBot(discord.Client):
+
+class ChristmasBot(discord.Client):    
+
   async def on_ready(self):
+    self.command_list = load_command_list()
     print('Christmas Bot is up! Let the festivities begin!')
-  async def on_message(self, message):
-    if message.content == 'x!naughty':
-      creature = Creature('tangy', 'he', None, None, None)
-      item = Item('bug in your code', None, None, 'rare')
 
-      await message.channel.send(formatter.format_naughty_correct(creature, item)) 
+  async def on_message(self, message):
+    if message.author == self.user:
+      print('Received message is from Christmas Bot... skipping')
+      return
+
+    tokens = message.content.split()
+    command = tokens[0].lower()
+    
+    response = 'Placeholder message - you shouldn\'t be seeing this'
+    if command in self.command_list.keys():
+      response = self.command_list[command](message, tokens)
+    else:
+      response = handle_spawn_chance(message, tokens)
+
+    if response != '':
+      await message.channel.send(response) 
 
 
 def run():
