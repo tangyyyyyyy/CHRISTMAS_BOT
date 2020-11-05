@@ -1,38 +1,38 @@
 class item:
-  def __init__(self, name, ID, imgLoc, rarity):
+  def __init__(self, name, id, img_loc, rarity):
     self.name = name
-    self.itemID = ID
-    self.imgLoc = imgLoc
+    self.itemID = id
+    self.img_loc = img_loc
     self.rarity = rarity #str
 
 
 class helper: 
-  def __init__(self, name, ID):
+  def __init__(self, name, id):
     self.inventory = [] #list of items
-    self.discordID = ID
+    self.discordID = id
     self.name = name
-    self.coalCount = 0
+    self.coal_count = 0
     self.score = 0
 
-  def calcScore(self):
-    self.score = len(self.inventory) - self.coalCount
+  def calc_score(self):
+    self.score = len(self.inventory) - self.coal_count
 
-  def foundItem(self, item):
+  def found_item(self, item):
     self.inventory.append(item)
 
-  def foundCoal(self):
+  def found_coal(self):
     #replace an item in inventory with coal
     pass
 
-  def parseInventory(self):
+  def parse_inventory(self):
     #parse inventory for output of x!inventory (i.e. seperate by rarity)
     pass
 
 class creature:
-  def __init__(self, name, ID, imgLoc, status):
+  def __init__(self, name, id, img_loc, status):
     self.name = name
-    self.creatureID = ID
-    self.imgLoc = imgLoc
+    self.creatureID = id
+    self.img_loc = img_loc
     self.status = status #naughty, either, nice
 
 class leaderboard:
@@ -40,10 +40,10 @@ class leaderboard:
     self.helpers_list = participants
     self.leaderboard = {}
   
-  def calcLeaderBoard(self):
+  def calc_lb(self):
     for helper in self.helpers_list:
-      self.leaderboard[helper] = helper.calcScore
+      self.leaderboard[helper] = helper.calc_score()
 
-  def parseLeaderBoard(self):
+  def parse_lb(self):
     #parse leaderboard dictionary for output of x!leaderboard
     pass
