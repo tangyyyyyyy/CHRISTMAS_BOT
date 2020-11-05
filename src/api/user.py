@@ -1,5 +1,7 @@
+from constants.messages import HELP_MESSAGE
+
 def handle_help(message, token):
-  return 'help placeholder'
+  return HELP_MESSAGE
 
 def handle_inventory(message_token):
   return 'inventory placeholder'
