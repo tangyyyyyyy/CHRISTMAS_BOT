@@ -1,13 +1,18 @@
 import discord
-from src.const import token
-import src.message as msg
+from const import TOKEN
+import message as msg
 
-class christmasBot(discord.Client):
+class ChristmasBot(discord.Client):
   async def on_ready(self):
     print('ONLINE')
   async def on_message(self, message):
     if message.content == 'x!naughty':
       await message.channel.send(msg.naughtyCorrect) 
 
-client = christmasBot()
-client.run(token)
+
+def run():
+  client = ChristmasBot()
+  client.run(TOKEN)
+
+if __name__ == "__main__":
+    run()
