@@ -8,6 +8,8 @@ class AbstractDao(ABC):
   def enable_channel(self, server: int, channel: int):
     """ Enables a channel for the bot to spawn creaatures.
 
+    TODO enable multiple channels
+
     Parameters:
     - server (int): the discord ID of the server
     - channel (int): the discord ID of the channel
@@ -19,6 +21,8 @@ class AbstractDao(ABC):
   @abstractmethod
   def disable_channel(self, server: int, channel: int):
     """ Enables a channel for the bot to spawn creaatures
+
+    TODO disable multiple channels
 
     Parameters:
     - server (int): the discord ID of the server

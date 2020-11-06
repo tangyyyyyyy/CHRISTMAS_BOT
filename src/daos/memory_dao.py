@@ -61,7 +61,7 @@ class MemoryDao(AbstractDao):
 
   def change_spawn_rate(self, server, new_spawn_rate):
     self.create_server_entry_if_nonexistent(server)
-    if new_spawn_rate < 0 or new_spawn_rate >= 100:
+    if new_spawn_rate < 0 or new_spawn_rate > 100:
       return None
     else:
       self.server_configs[server].spawn_rate_percent = new_spawn_rate
