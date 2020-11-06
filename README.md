@@ -11,19 +11,25 @@ It’s a frosty winter night. As you warm up by the fire, you hear a faint jingl
   `python` with `python3`)
   
 ## Packages
-###### api
+
+### api
+
 - API response handlers
 - admin contains admin commands
 - user contains user commands
 - spawn contains spawn logic and nice/naughty commands
 
-###### constants
+### constants
+
 - config.py: bot constants + master command list from APIs
 - messages.py: naughty/nice format strings, along with error messages if needed
 
-###### helpers
--  response_formatter.py: contains text-formatting functions for response
+### helpers
 
-###### classes.py
-- contains custom classes and class methods (Item, helper, Creature, leaderboard)
-- Will be replaced with DTOs once we figure out how to handle state
+- response_formatter.py: contains text-formatting functions for response
+
+### dtos
+
+- Stands for Data Transfer Object; basically a blueprint for a data type
+- Contains individual classes for data types (Item, Player, Creature, ServerConfig)
+- No class methods at all, those are handled by DAOs and helper classes

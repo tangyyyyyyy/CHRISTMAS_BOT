@@ -1,17 +1,18 @@
 from helpers import response_formatter
-from classes import Creature, Item
+from dtos.creature import CreatureDto
+from dtos.item import  ItemDto
 
 def handle_nice(message, tokens):
-  creature = Creature('Jeff Bezos', 'he', None, None, 'naughty')
-  item = Item('extended AWS free trial', None, None, 'common')
+  creature = CreatureDto('Jeff Bezos', 'he', 'None', 'None', 'naughty')
+  item = ItemDto('extended AWS free trial', 'None', 'None', 'common')
   if creature.status == 'nice':
     return response_formatter.format_correct_nice_response(creature, item)
   else:
     return response_formatter.format_incorrect_naughty_response(creature, item)
 
 def handle_naughty(message, tokens):
-  creature = Creature('Tangy', 'he', None, None, 'nice')
-  item = Item('bug in your code', None, None, 'rare')
+  creature = CreatureDto('Tangy', 'he', 'None', 'None', 'nice')
+  item = ItemDto('bug in your code', 'None', 'None', 'rare')
   if creature.status == 'naughty':
     return response_formatter.format_correct_naughty_response(creature, item)
   else:
