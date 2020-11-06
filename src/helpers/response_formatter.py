@@ -23,11 +23,11 @@ def format_correct_nice_response(creature, item):
     item_name=item.name, item_rarity=item.rarity)
 
 def format_incorrect_naughty_response(creature, item):
-  return NAUGHTY_INCORRECT.format(creature_name=creature.name,
+  return NICE_INCORRECT.format(creature_name=creature.name,
     caps_creature_pronoun=creature.pronoun.capitalize(), creature_pronoun=creature.pronoun,
     replaced_item=item.name)
 
 def format_incorrect_nice_response(creature, item):
-  return NICE_INCORRECT.format(creature_name=creature.name,
+  return NAUGHTY_INCORRECT.format(creature_name=creature.name,
     caps_creature_pronoun=creature.pronoun.capitalize(), creature_pronoun=creature.pronoun,
     replaced_item=item.name)
