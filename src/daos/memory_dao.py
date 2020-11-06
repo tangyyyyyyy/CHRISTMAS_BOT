@@ -79,9 +79,9 @@ class MemoryDao(AbstractDao):
     self.create_player_entry_if_nonexistent(server, player)
     return self.server_players[server][player]
 
-  def get_tree(self, server):
+  def get_server(self, server):
     self.create_server_entry_if_nonexistent(server)
-    return self.server_configs[server].tree
+    return self.server_configs[server]
 
 
   # Spawn/Item Interactions

@@ -81,13 +81,13 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_tree(self, server: int):
+  def get_server(self, server: int):
     """ Gets the tree of a server
 
     Parameters:
     - server (int): the discord ID of the server
 
-    Returns server tree if successful
+    Returns server dto if successful
     """
     pass
 
