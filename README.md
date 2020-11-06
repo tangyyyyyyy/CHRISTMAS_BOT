@@ -24,12 +24,17 @@ It’s a frosty winter night. As you warm up by the fire, you hear a faint jingl
 - config.py: bot constants + master command list from APIs
 - messages.py: naughty/nice format strings, along with error messages if needed
 
-### helpers
+### daos
 
-- response_formatter.py: contains text-formatting functions for response
+- Stands for Data Access Object; these contain methods used to store data in some way
+- Can include storing in memory (within code), in a file, or in a database
 
 ### dtos
 
 - Stands for Data Transfer Object; basically a blueprint for a data type
 - Contains individual classes for data types (Item, Player, Creature, ServerConfig)
 - No class methods at all, those are handled by DAOs and helper classes
+
+### helpers
+
+- response_formatter.py: contains text-formatting functions for response
