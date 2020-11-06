@@ -61,3 +61,6 @@ HELP_MESSAGE = ('```NEED SOME HELP??? HERE ARE OUR COMMANDS:\n\n\n'
         '\nRequest: parameters = <user> who wrote command (string)'
         '\nResponse: image and string```'
         )
+
+BAD_COMMAND_MESSAGE = ('Oh no, the elves didn\'t understand your command! '
+                        'Please check x!help to see what they can do!')
