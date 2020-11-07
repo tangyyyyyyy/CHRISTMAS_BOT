@@ -2,7 +2,7 @@ import discord
 import random
 
 from api.spawn import handle_spawn_chance
-from constants.config import DISCORD_TOKEN, load_command_list
+from constants.globals import DISCORD_TOKEN, load_command_list
 from daos.memory_dao import MemoryDao
 
 class ChristmasBot(discord.Client):    

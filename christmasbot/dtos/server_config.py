@@ -1,4 +1,4 @@
-from constants.config import DEFAULT_DESPAWN_TIME_SECONDS, DEFAULT_SPAWN_RATE_PERCENT
+from constants.globals import DEFAULT_DESPAWN_TIME_SECONDS, DEFAULT_SPAWN_RATE_PERCENT
 
 
 class ServerConfigDto:
