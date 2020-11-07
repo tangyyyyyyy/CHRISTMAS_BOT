@@ -43,6 +43,7 @@ class ChristmasBot(discord.Client):
     if command in self.command_list.keys():
       print('Invoking command {}'.format(command))
       await self.command_list[command](message, self.dao, tokens)
+      await message.delete(delay=4)
     elif command in ['x!nice', 'x!naughty'] and not has_ongoing_spawn(self.ongoing_spawns, server_id, channel_id):
       # prevents max from spamming x!nice/naughty
       return
@@ -88,6 +89,7 @@ class ChristmasBot(discord.Client):
               bot_response, = check_if_command_correct(creature, popped_item, reply)
             else:
               bot_response = 'You already had that item :('
+            await reply.delete(delay=5)
           except asyncio.TimeoutError:
             bot_response = 'The creature left because you kept it waiting for too long!'
           finally:
