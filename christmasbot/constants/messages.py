@@ -68,7 +68,7 @@ HELP_MESSAGE = discord.Embed(
 BAD_COMMAND_MESSAGE = ('Oh no, the elves didn\'t understand your command! '
       'Please check x!help to see what they can do!')
 
-CREATURE_SPAWN_TITLE = ('Someone was impressed by your Christmas spirit and ' 
+CREATURE_SPAWN_TITLE = ('Someone was impressed by your Christmas spirit and' 
                         ' has decided to drop by!')
 
 CREATURE_SPAWN_DESCRIPTION = ('Let them in with {creature_command}!')
