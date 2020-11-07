@@ -24,8 +24,19 @@ async def handle_disable_channel(message, dao: AbstractDao, tokens: list[str]):
   await message.channel.send(response) 
 
 
-async def handle_change_despawn_time(message, dao, tokens):
-  response = 'Change despawn time placeholder'
+async def handle_change_despawn_time(message, dao: AbstractDao, tokens):
+  if len(tokens) > 2:
+    return BAD_COMMAND_MESSAGE
+  new_despawn_time = -1
+  try:
+    new_despawn_time = int(tokens[1])
+  except:
+    pass
+  if dao.change_despawn_time(message.guild.id, new_despawn_time) == None:
+    response = BAD_COMMAND_MESSAGE
+  else:
+    print('Despawn time changed to {}'.format(new_despawn_time))
+    response = 'I changed the despawn time to {} seconds!'.format(new_despawn_time)
   await message.channel.send(response) 
 
 

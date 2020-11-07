@@ -1,5 +1,8 @@
 import discord
 
+from constants.globals import ChristmasColor
+
+
 #creature_name, creature_pronoun, item_pronoun, item_name, item_rarity, creature_name
 NAUGHTY_CORRECT = ('Somberly, you were correct... {creature_name} hangs their head in shame... '
        'Hoping to change fate, '
@@ -34,7 +37,7 @@ HELP_MESSAGE = discord.Embed(
                 'behind! Identify whether the creatures are nice or naughty '
                 'with the right command when they come and collect items to '
                 'become your server\'s Chamption of Christmas!'),
-  color=discord.Colour(0x00873E)
+  color=discord.Colour(ChristmasColor.GOLD)
 ).set_author(
   name='Christmas Bot',
   icon_url='https://i.imgur.com/YZ6v1jw.png',
@@ -64,3 +67,8 @@ HELP_MESSAGE = discord.Embed(
 
 BAD_COMMAND_MESSAGE = ('Oh no, the elves didn\'t understand your command! '
       'Please check x!help to see what they can do!')
+
+CREATURE_SPAWN_TITLE = ('Someone was impressed by your Christmas spirit and ' 
+                        ' has decided to drop by!')
+
+CREATURE_SPAWN_DESCRIPTION = ('Let them in with {creature_command}!')
