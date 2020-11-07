@@ -9,7 +9,6 @@ def get_item_pronoun(item):
   else:
     return 'a'
 
-
 def get_correct_command(creature: CreatureDto):
   if creature.status != 'nice' and creature.status != 'naughty':
     raise Exception('Creature was neither nice nor naughty! It was {}'.format(creature.status))
@@ -48,3 +47,9 @@ def format_incorrect_nice_response(creature: CreatureDto, item: ItemDto):
 
 def format_spawn_description(creature: CreatureDto):
   return CREATURE_SPAWN_DESCRIPTION.format(creature_command=get_correct_command(creature))
+
+def format_inventory(inventory: [ItemDto]):
+  formatted_string = 'Wow! Look at all your items:'
+  for item in inventory:
+    formatted_string = '\n' + formatted_string + item.display_name
+  return formatted_string

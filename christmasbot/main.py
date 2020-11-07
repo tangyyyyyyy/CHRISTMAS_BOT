@@ -77,13 +77,13 @@ class ChristmasBot(discord.Client):
        #       #if message sender isn't on player list add them\
         #      self.player_dict[message.author] = PlayerDto(message.author) #[player1, player2]
             self.dao.create_player_entry_if_nonexistent(server_id, message.author)
-            if is_right and item not in self.server_players[server_id][message.author].inventory:
+            if is_right and item not in self.dao.server_players[server_id][message.author].inventory:
               #give player the item
               #self.player_dict[message.author].inventory.append(item)
               self.dao.add_item_to_player(server_id, message.author, item)
-              for item in self.player_dict[message.author].inventory:
+              for item in self.dao.server_players[server_id][message.author].inventory:
                 print(item.display_name)
-            elif item in self.player_dict[message.author].inventory:
+            elif item in self.dao.server_players[server_id][message.author].inventory:
               bot_response = 'You already had that item :('
             else:
               #replace it with coal
