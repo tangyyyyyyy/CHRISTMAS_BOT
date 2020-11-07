@@ -23,7 +23,7 @@ class ChristmasBot(discord.Client):
     response = 'Placeholder message - you shouldn\'t be seeing this'
     if command in self.command_list.keys():
       print('Invoking command {}'.format(command))
-      response = self.command_list[command](message, self.dao, tokens)
+      await self.command_list[command](message, self.dao, tokens)
     else:
       # General message - calculate if the bot should respond
       server_config = self.dao.get_server(message.guild.id)
@@ -33,18 +33,7 @@ class ChristmasBot(discord.Client):
         if roll <= server_config.spawn_rate_percent:
           # roll was successful, respond with spawn message
           print('Spawning creature...')
-          response = handle_spawn_chance(message, self.dao, tokens)
-        else:
-          return
-      else:
-        # spawns are disabled in this channel
-        return 
-    
-    if type(response) is str:
-      await message.channel.send(response) 
-    elif type(response) is discord.Embed:
-      await message.channel.send(embed=response)
-
+          await handle_spawn_chance(message, self.dao, tokens)
 
 def run():
   client = ChristmasBot()
