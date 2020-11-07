@@ -1,9 +1,8 @@
 from enum import IntEnum
 from dtos.creature import CreatureDto
-from dtos.item import ItemDto
 
 DISCORD_CLIENT_ID = '773308497538056222'
-DISCORD_TOKEN = 'not again'
+DISCORD_TOKEN = 'almost published the discord token ha ha jk unless'
 
 DEFAULT_DESPAWN_TIME_SECONDS = 10
 DEFAULT_SPAWN_RATE_PERCENT = 100

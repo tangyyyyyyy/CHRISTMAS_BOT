@@ -9,7 +9,6 @@ async def handle_help(message, dao: AbstractDao, tokens: list[str]):
 
 
 async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
-  print('dao', dao)
   server_id = message.guild.id
   try:
     response = format_inventory(dao.server_players[server_id][message.author].inventory)
