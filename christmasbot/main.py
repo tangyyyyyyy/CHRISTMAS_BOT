@@ -39,8 +39,11 @@ class ChristmasBot(discord.Client):
       else:
         # spawns are disabled in this channel
         return 
-
-    await message.channel.send(response) 
+    
+    if type(response) is str:
+      await message.channel.send(response) 
+    elif type(response) is discord.Embed:
+      await message.channel.send(embed=response)
 
 
 def run():
