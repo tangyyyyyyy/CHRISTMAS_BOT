@@ -33,15 +33,19 @@ class ChristmasBot(discord.Client):
 
     tokens = message.content.split(' ')
     command = tokens[0].lower()
+
+    server_id = message.guild.id
+    channel_id = message.channel.id
     
     response = 'Placeholder message - you shouldn\'t be seeing this'
     if command in self.command_list.keys():
       print('Invoking command {}'.format(command))
       await self.command_list[command](message, self.dao, tokens)
+    elif command in ['x!nice', 'x!naughty'] and not has_ongoing_spawn(self.ongoing_spawns, server_id, channel_id):
+      # prevents max from spamming x!nice/naughty
+      return
     else:
       # General message - calculate if the bot should respond
-      server_id = message.guild.id
-      channel_id = message.channel.id
       server_config = self.dao.get_server(server_id)
       if ((channel_id in server_config.enabled_channels) and
         (not has_ongoing_spawn(self.ongoing_spawns, server_id, channel_id))):
