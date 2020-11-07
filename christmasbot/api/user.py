@@ -12,6 +12,7 @@ async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
   server_id = message.guild.id
   try:
     response = format_inventory(dao.server_players[server_id][message.author].inventory)
+    print('response=', response)
     #format(response)
   except KeyError:
     #author doesn't have inventory
