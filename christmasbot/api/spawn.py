@@ -1,19 +1,18 @@
 from helpers import response_formatter
 from daos.abstract_dao import AbstractDao
-from dtos.creature import CreatureDto
-from dtos.item import  ItemDto
+from helpers.spawn import get_item, get_naughty_creature, get_nice_creature
 
 def handle_nice(message, dao: AbstractDao, tokens: list[str]):
-  creature = CreatureDto('Jeff Bezos', 'he', 'None', 'None', 'naughty')
-  item = ItemDto('extended AWS free trial', 'None', 'None', 'common')
+  creature = get_nice_creature()
+  item = get_item(creature)
   if creature.status == 'nice':
     return response_formatter.format_correct_nice_response(creature, item)
   else:
     return response_formatter.format_incorrect_naughty_response(creature, item)
 
 def handle_naughty(message, dao: AbstractDao, tokens: list[str]):
-  creature = CreatureDto('Tangy', 'he', 'None', 'None', 'nice')
-  item = ItemDto('bug in your code', 'None', 'None', 'rare')
+  creature = get_naughty_creature()
+  item = get_item(creature)
   if creature.status == 'naughty':
     return response_formatter.format_correct_naughty_response(creature, item)
   else:
