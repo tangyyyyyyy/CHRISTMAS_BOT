@@ -43,7 +43,7 @@ class ChristmasBot(discord.Client):
     if command in self.command_list.keys():
       print('Invoking command {}'.format(command))
       await self.command_list[command](message, self.dao, tokens)
-      await message.delete(delay=4)
+      await message.delete(delay=10)
     elif command in ['x!nice', 'x!naughty'] and not has_ongoing_spawn(self.ongoing_spawns, server_id, channel_id):
       # prevents max from spamming x!nice/naughty
       return
@@ -74,8 +74,6 @@ class ChristmasBot(discord.Client):
             )
             bot_response, is_right = check_if_command_correct(creature, item, reply)
             #add user to player list if they aren't on it:
-
-
             self.dao.create_player_entry_if_nonexistent(server_id, message.author)
             if is_right and item not in self.dao.server_players[server_id][message.author].inventory:
               #give player the item
@@ -84,9 +82,17 @@ class ChristmasBot(discord.Client):
                 #debugging purposes, print items
                 print(item.display_name)
             elif not is_right:
-              # replace it with coal
-              popped_item = self.dao.replace_player_item_with_coal(server_id, message.author)
-              bot_response, = check_if_command_correct(creature, popped_item, reply)
+              # replace it with coal if you have an item
+              if len(self.dao.server_players[server_id][message.author].inventory)>0:
+                popped_item = self.dao.replace_player_item_with_coal(server_id, message.author)
+                print('coal=', self.dao.server_players[server_id][message.author].coal_count)
+                bot_response, temp = check_if_command_correct(creature, popped_item, reply)
+              else:
+                #update coal count even if they dont have any items
+                self.dao.server_players[server_id][message.author].coal_count += 1
+                print('coal=', self.dao.server_players[server_id][message.author].coal_count)
+                bot_response = '{} tried to replace an item with coal, but your inventory is empty. ' \
+                               'Maybe coal isn\'t so bad after all...'.format(creature.display_name)
             else:
               bot_response = 'You already had that item :('
             await reply.delete(delay=5)
