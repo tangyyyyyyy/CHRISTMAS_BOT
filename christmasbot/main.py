@@ -8,7 +8,7 @@ from api.user import USER_COMMAND_LIST
 from daos.memory_dao import MemoryDao
 from constants.globals import DISCORD_TOKEN
 from dtos.player import PlayerDto
-from helpers.spawn import (check_if_command_correct, get_creature, get_item,
+from helpers.spawn import (check_if_command_correct, get_bot_response, get_random_creature, get_random_item,
   add_ongoing_spawn, has_ongoing_spawn, remove_ongoing_spawn, create_creature_message)
 
 def load_command_list():
@@ -38,6 +38,7 @@ class ChristmasBot(discord.Client):
 
     server_id = message.guild.id
     channel_id = message.channel.id
+    player_id = message.author.id
     
     response = 'Placeholder message - you shouldn\'t be seeing this'
     if command in self.command_list.keys():
@@ -57,8 +58,8 @@ class ChristmasBot(discord.Client):
         if roll <= server_config.spawn_rate_percent:
           # roll was successful, respond with spawn message
           print('Spawning creature...')
-          creature = get_creature()
-          item = get_item(creature)
+          creature = get_random_creature(self.dao)
+          item = get_random_item(self.dao, creature)
           # lock spawn so 2 spawns don't happen at the same time
           add_ongoing_spawn(self.ongoing_spawns, server_id, channel_id, creature)
           bot_message = await message.channel.send(embed=create_creature_message(creature, item))
@@ -72,29 +73,24 @@ class ChristmasBot(discord.Client):
               check=message_is_nice_or_naughty, 
               timeout=server_config.despawn_time
             )
-            bot_response, is_right = check_if_command_correct(creature, item, reply)
+            is_right = check_if_command_correct(reply, creature)
             #add user to player list if they aren't on it:
-            self.dao.create_player_entry_if_nonexistent(server_id, message.author)
-            if is_right and item not in self.dao.server_players[server_id][message.author].inventory:
-              #give player the item
-              self.dao.add_item_to_player(server_id, message.author, item)
-              for item in self.dao.server_players[server_id][message.author].inventory:
-                #debugging purposes, print items
-                print(item.display_name)
-            elif not is_right:
-              # replace it with coal if you have an item
-              if len(self.dao.server_players[server_id][message.author].inventory)>0:
-                popped_item = self.dao.replace_player_item_with_coal(server_id, message.author)
-                print('coal=', self.dao.server_players[server_id][message.author].coal_count)
-                bot_response, temp = check_if_command_correct(creature, popped_item, reply)
+
+            if is_right:
+              if item in self.dao.get_player(server_id, player_id).inventory:
+                bot_response = 'You already had that item :('
               else:
-                #update coal count even if they dont have any items
-                self.dao.server_players[server_id][message.author].coal_count += 1
-                print('coal=', self.dao.server_players[server_id][message.author].coal_count)
-                bot_response = '{} tried to replace an item with coal, but your inventory is empty. ' \
-                               'Maybe coal isn\'t so bad after all...'.format(creature.display_name)
+                #give player the item
+                self.dao.add_item_to_player(server_id, player_id, item.id)
+                bot_response = get_bot_response(is_right, creature, item)
             else:
-              bot_response = 'You already had that item :('
+              # replace it with coal if you have an item
+              popped_item = self.dao.replace_player_item_with_coal(server_id, message.author)
+              if popped_item is not None:
+                bot_response = get_bot_response(is_right, creature, item)
+              else:
+                bot_response = '{} tried to replace an item with coal, but your inventory is empty. ' \
+                               'Maybe coal isn\'t so bad after all...'.format(creature.display_name)              
             await reply.delete(delay=5)
           except asyncio.TimeoutError:
             bot_response = 'The creature left because you kept it waiting for too long!'

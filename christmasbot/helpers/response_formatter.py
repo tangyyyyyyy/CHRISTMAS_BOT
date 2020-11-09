@@ -48,7 +48,9 @@ def format_incorrect_nice_response(creature: CreatureDto, item: ItemDto):
 def format_spawn_description(creature: CreatureDto):
   return CREATURE_SPAWN_DESCRIPTION.format(creature_command=get_correct_command(creature))
 
-def format_inventory(inventory: [ItemDto]):
+def format_inventory(inventory: list[ItemDto]):
+  if inventory == []:
+    return 'You\'re penniless...'
   formatted_string = 'Wow! Look at all your items:\n'
   for item in inventory:
     add_to_formatted_string = item.display_name + '\n'

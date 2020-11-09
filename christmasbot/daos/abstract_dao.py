@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from dtos.creature import CreatureDto
+from dtos.item import ItemDto
+
 class AbstractDao(ABC):
 
   # Admin Config
@@ -125,3 +128,45 @@ class AbstractDao(ABC):
     pass
 
 
+  # Bot specific DAO calls
+
+  @abstractmethod
+  def get_creature(self, creature: str) -> CreatureDto:
+    """ Gets creature based on its ID.
+
+    Parameters:
+    - creature (str): unique creature id
+
+    Returns the Creature dto or throws an exception if the creature doesn't exist.
+    """
+    pass
+
+  @abstractmethod
+  def get_random_creature(self) -> CreatureDto:
+    """ Gets a random creature dto
+
+    Returns the creature dto, or throws an exception if there are no creatures available
+    """
+    pass
+
+  @abstractmethod
+  def get_item(self, item: str) -> ItemDto:
+    """ Gets item based on its ID.
+
+    Parameters:
+    - item (str): unique item ID
+
+    Returns the item dto or throws an exception if the item doesn't exist.
+    """
+    pass
+
+  @abstractmethod
+  def get_items(self, items: list[str]) -> ItemDto:
+    """ List get_item but for multiple items
+
+    Parameters:
+    = items (list[str]): unique item IDs
+
+    Returns list[item dtos] or throws an exception if any item doesn't exist.
+    """
+    pass

@@ -3,7 +3,7 @@ import random
 from daos.abstract_dao import AbstractDao
 
 from dtos.creature import CreatureDto
-from dtos.item import ItemDto
+from dtos.item import ItemDto, ItemRarity
 from dtos.player import PlayerDto
 from dtos.server_config import ServerConfigDto
 
@@ -11,8 +11,21 @@ class MemoryDao(AbstractDao):
   def __init__(self):
     self.server_configs: dict[int, ServerConfigDto] = {}
     self.server_players: dict[int, dict[int, PlayerDto]] = {}
-    self.creatures: dict[str, CreatureDto] = {}
-    self.items: dict[str, ItemDto] = {}
+    self.creatures: dict[str, CreatureDto] = {
+      'nice_gingy': CreatureDto('nice_gingy', 'Nice Gingy', 'she', 
+        'https://i.imgur.com/MBmsrHG.png', 'nice', 
+        ['gumdrop_ornament', 'iced_bowtie']),
+      'naughty_gingy': CreatureDto('naughty_gingy', 'Naughty Gingy', 'he', 
+        'https://i.imgur.com/1CnajlU.png', 'naughty', ['dash_of_cinnamon', 'iced_bowtie'])
+    }
+    self.items: dict[str, ItemDto] = {
+      'gumdrop_ornament': ItemDto('gumdrop_ornament', 'Gumdrop Ornament', 
+        'https://i.imgur.com/1CnajlU.png', ItemRarity.RARE),
+      'iced_bowtie': ItemDto('iced_bowtie', 'Iced Bowtie', 
+        'https://i.imgur.com/1CnajlU.png', ItemRarity.SPECIAL),
+      'dash_of_cinnamon': ItemDto('dash_of_cinnamon', 'Dash of Cinnamon', 
+        'https://i.imgur.com/1CnajlU.png', ItemRarity.COMMON)
+    }
 
   # Helpers
 
@@ -96,6 +109,7 @@ class MemoryDao(AbstractDao):
       # player already has item
       return None
 
+
   def replace_player_item_with_coal(self, server, player):
     self.create_server_entry_if_nonexistent(server)
     self.create_player_entry_if_nonexistent(server, player)
@@ -109,3 +123,34 @@ class MemoryDao(AbstractDao):
     else:
       # player has no items
       return None
+
+
+  def get_creature(self, creature: str):
+    if creature in self.creatures:
+      return self.creatures[creature]
+    else:
+      raise Exception('Creature {} does not exist!'.format(creature))
+
+
+  def get_random_creature(self):
+    if len(self.creatures) == 0:
+      raise Exception('No creatures exist to choose from!')
+    key_chosen = random.choice(list(self.creatures.keys()))
+    return self.creatures.get(key_chosen)
+
+
+  def get_items(self, items: list[str]):
+    results = []
+    for item in items:
+      if item in self.items.keys():
+        results.append(self.items.get(item))
+      else:
+        raise Exception('Item {} does not exist!'.format(item))
+    return results
+
+
+  def get_item(self, item: str):
+    if item in self.items:
+      return self.items[item]
+    else:
+      raise Exception('Item {} does not exist!'.format(item))

@@ -10,13 +10,11 @@ async def handle_help(message, dao: AbstractDao, tokens: list[str]):
 
 async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
   server_id = message.guild.id
-  try:
-    response = format_inventory(dao.server_players[server_id][message.author].inventory)
-    print('response=', response)
-    #format(response)
-  except KeyError:
-    #author doesn't have inventory
-    response = 'You\'re penniless...'
+  author_profile = dao.get_player(server_id, message.author.id).inventory
+  detailed_inventory = dao.get_items(author_profile)
+  if detailed_inventory is None:
+    raise Exception('Items in player\'s inventory do not exist!')
+  response = format_inventory(detailed_inventory)
   await message.channel.send(response)
 
 
