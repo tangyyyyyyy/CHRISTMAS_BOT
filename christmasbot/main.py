@@ -73,24 +73,10 @@ class ChristmasBot(discord.Client):
               check=message_is_nice_or_naughty, 
               timeout=server_config.despawn_time
             )
-            is_right = check_if_command_correct(reply, creature)
-            #add user to player list if they aren't on it:
 
-            if is_right:
-              if item in self.dao.get_player(server_id, player_id).inventory:
-                bot_response = 'You already had that item :('
-              else:
-                #give player the item
-                self.dao.add_item_to_player(server_id, player_id, item.id)
-                bot_response = get_bot_response(is_right, creature, item)
-            else:
-              # replace it with coal if you have an item
-              popped_item = self.dao.replace_player_item_with_coal(server_id, message.author)
-              if popped_item is not None:
-                bot_response = get_bot_response(is_right, creature, item)
-              else:
-                bot_response = '{} tried to replace an item with coal, but your inventory is empty. ' \
-                               'Maybe coal isn\'t so bad after all...'.format(creature.display_name)              
+            is_correct_reply = check_if_command_correct(reply, creature)
+            bot_response = get_bot_response(is_correct_reply, self.dao, reply, creature, item)
+            
             await reply.delete(delay=5)
           except asyncio.TimeoutError:
             bot_response = 'The creature left because you kept it waiting for too long!'

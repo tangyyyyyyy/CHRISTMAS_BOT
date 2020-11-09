@@ -1,6 +1,7 @@
 import random
 from os import getcwd
 import discord
+from api import user
 
 from constants.globals import ChristmasColor
 from constants.messages import CREATURE_SPAWN_TITLE
@@ -69,16 +70,35 @@ def check_if_command_correct(user_message, creature: CreatureDto):
     raise Exception('Creature was neither nice or naughty!')
 
 
-def get_bot_response(is_correct_reply: bool, creature: CreatureDto, item: ItemDto):
-  if creature.status == 'nice':
-    if is_correct_reply:
-      return format_correct_nice_response(creature, item)
+def get_bot_response(is_correct_reply: bool, dao: AbstractDao, user_message, creature: CreatureDto, item: ItemDto):
+  server_id = user_message.guild.id
+  player_id = user_message.author.id
+  
+  if is_correct_reply:
+    if item in dao.get_player(server_id, player_id).inventory:
+      return 'You already had that item :('
     else:
-      return format_incorrect_nice_response(creature, item)
-  elif creature.status == 'naughty':
-    if is_correct_reply:
-      return format_correct_naughty_response(creature, item)
-    else:
-      return format_incorrect_naughty_response(creature, item)
+      #give player the item
+      dao.add_item_to_player(server_id, player_id, item.id)
+      if creature.status == 'nice':
+        return format_correct_nice_response(creature, item)
+      elif creature.status == 'naughty':
+        return format_correct_naughty_response(creature, item)
+      else:
+        raise Exception('Creature was neither nice or naughty!')
   else:
-    raise Exception('Creature was neither nice or naughty!')
+    # replace it with coal if you have an item
+    popped_item = dao.replace_player_item_with_coal(server_id, player_id)
+    if popped_item is not None:      
+      if creature.status == 'nice': 
+          return format_incorrect_nice_response(creature, item)
+      elif creature.status == 'naughty':
+          return format_incorrect_naughty_response(creature, item)
+      else:
+        raise Exception('Creature was neither nice or naughty!')
+    else:
+      return '{} tried to replace one of your items with coal, but your inventory is empty. ' \
+                      'Maybe coal isn\'t so bad after all...'.format(creature.display_name) 
+
+
+

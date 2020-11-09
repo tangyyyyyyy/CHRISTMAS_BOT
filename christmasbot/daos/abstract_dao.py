@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
+from dtos.player import PlayerDto
+from dtos.server_config import ServerConfigDto
 
 class AbstractDao(ABC):
 
@@ -76,7 +78,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_player(self, server: int, player: int):
+  def get_player(self, server: int, player: int) -> PlayerDto:
     """ Gets info for a player
 
     Parameters:
@@ -88,7 +90,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_server(self, server: int):
+  def get_server(self, server: int) -> ServerConfigDto:
     """ Gets the tree of a server
 
     Parameters:
