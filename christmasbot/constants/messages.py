@@ -78,6 +78,8 @@ CREATURE_SPAWN_TITLE = ('Someone was impressed by your Christmas spirit and'
 
 CREATURE_SPAWN_DESCRIPTION = ('Let them in with {creature_command}')
 
+POST_SPAWN_TITLE = ('Creature identified!')
+
 ADMIN_NO_PERMISSIONS_TITLE = ('Only admins can use this command!')
 
 ADMIN_NO_PERMISSIONS_DESCRIPTION = ('{user_mention}, you do not have sufficient '

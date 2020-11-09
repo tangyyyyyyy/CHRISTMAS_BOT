@@ -5,7 +5,7 @@ from api import user
 
 from constants.globals import ChristmasColor
 from constants.messages import (CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, 
-  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT)
+  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT, POST_SPAWN_TITLE)
 from daos.abstract_dao import AbstractDao
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
@@ -98,6 +98,15 @@ def create_creature_message(creature: CreatureDto, item: ItemDto):
       url=creature.img_url
     )
 
+
+def create_post_spawn_message(creature: CreatureDto, message: str):
+  return discord.Embed(
+    title=POST_SPAWN_TITLE,
+    description=message,
+    color=discord.Colour(ChristmasColor.GOLD),
+  ).set_image(
+    url=creature.img_url
+  )
 
 def check_if_command_correct(user_message, creature: CreatureDto):
   command = user_message.content

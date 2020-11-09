@@ -9,7 +9,7 @@ from daos.memory_dao import MemoryDao
 from constants.globals import DISCORD_TOKEN
 from dtos.player import PlayerDto
 from helpers.spawn import (check_if_command_correct, get_bot_response, get_random_creature, get_random_item,
-  add_ongoing_spawn, has_ongoing_spawn, remove_ongoing_spawn, create_creature_message)
+  add_ongoing_spawn, has_ongoing_spawn, remove_ongoing_spawn, create_creature_message, create_post_spawn_message)
 
 def load_command_list():
   command_list = {}
@@ -82,7 +82,7 @@ class ChristmasBot(discord.Client):
             bot_response = 'The creature left because you kept it waiting for too long!'
           finally:
             remove_ongoing_spawn(self.ongoing_spawns, server_id, channel_id)
-            await message.channel.send(bot_response)
+            await bot_message.edit(embed=create_post_spawn_message(creature,bot_response))
 
 
 def run():
