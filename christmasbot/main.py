@@ -44,7 +44,6 @@ class ChristmasBot(discord.Client):
     if command in self.command_list.keys():
       print('Invoking command {}'.format(command))
       await self.command_list[command](message, self.dao, tokens)
-      await message.delete(delay=10)
     elif command in ['x!nice', 'x!naughty'] and not has_ongoing_spawn(self.ongoing_spawns, server_id, channel_id):
       # prevents max from spamming x!nice/naughty
       return
@@ -75,9 +74,8 @@ class ChristmasBot(discord.Client):
             )
 
             is_correct_reply = check_if_command_correct(reply, creature)
-            bot_response = get_bot_response(is_correct_reply, self.dao, reply, creature, item)
-            
-            await reply.delete(delay=5)
+            bot_response = get_bot_response(message.author, is_correct_reply, self.dao, reply, creature, item)
+            await reply.delete(delay=0.5)
           except asyncio.TimeoutError:
             bot_response = 'The creature left because you kept it waiting for too long!'
           finally:

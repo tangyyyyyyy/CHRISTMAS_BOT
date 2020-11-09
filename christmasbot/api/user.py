@@ -14,7 +14,7 @@ async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
   detailed_inventory = dao.get_items(author_profile)
   if detailed_inventory is None:
     raise Exception('Items in player\'s inventory do not exist!')
-  response = format_inventory(detailed_inventory)
+  response = format_inventory(message.author, detailed_inventory)
   await message.channel.send(embed=response)
 
 

@@ -4,7 +4,7 @@ from constants.globals import ChristmasColor
 
 
 #creature_name, creature_pronoun, item_pronoun, item_name, item_rarity, creature_name
-NAUGHTY_CORRECT = ('Somberly, you were correct... {creature_name} hangs their head in shame... '
+NAUGHTY_CORRECT = ('Somberly, {user_mention} was correct... {creature_name} hangs their head in shame... '
        'Hoping to change fate, '
         '{creature_pronoun} bribes you with '
         '{item_pronoun} {item_name}. Only a {item_rarity} item? '
@@ -12,21 +12,21 @@ NAUGHTY_CORRECT = ('Somberly, you were correct... {creature_name} hangs their he
         'chuckle and add it to your inventory.')
 
 #creature_name, caps_creature_pronoun, creature_pronoun, item_pronoun, item_name, item_rarity
-NICE_CORRECT = ('Excellent guess! You were correct, it was a nice {creature_name}! {caps_creature_pronoun} beams with pride. '
+NICE_CORRECT = ('Excellent guess, {user_mention}! It was a nice {creature_name}! {caps_creature_pronoun} beams with pride. '
     'As thanks'
         ' for your good news, {creature_pronoun} gives you '
         '{item_pronoun} {item_name}. Wow! A {item_rarity} item! '
         'You check the "extra nice" box on your list and add the item to your inventory.')
 
 #creature_name, caps_creature_pronoun, creature_pronoun, replaced_item
-NAUGHTY_INCORRECT = ('Regretfully, you are wrong... It was a nice {creature_name}! {caps_creature_pronoun} can\'t'
+NAUGHTY_INCORRECT = ('Regretfully, {user_mention} was wrong... It was a nice {creature_name}! {caps_creature_pronoun} can\'t'
       ' let you down, so {creature_pronoun} chose to act the part. '
       '{caps_creature_pronoun} replaces '
       'your {replaced_item} with coal! The guilt is immense, but it\'s better than letting you '
       'be wrong... ')
 
 #creature_name, caps_creature_pronoun, creature_pronoun, replaced_item
-NICE_INCORRECT = ('Wrong, as usual... It was a naughty {creature_name}. Oh no! {caps_creature_pronoun} '
+NICE_INCORRECT = ('{user_mention} was wrong, as usual... It was a naughty {creature_name}. Oh no! {caps_creature_pronoun} '
       'thinks your mistake was an act of deception! In spite, {creature_pronoun} replaces '
       'your {replaced_item} with coal! Serves you right. ')
 

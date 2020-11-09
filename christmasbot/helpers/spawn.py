@@ -9,6 +9,7 @@ from constants.messages import (CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION
 from daos.abstract_dao import AbstractDao
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
+from dtos.player import PlayerDto
 
 def get_item_pronoun(item):
   if item.display_name[0] in 'AEIOUaeiou':
@@ -27,29 +28,30 @@ def get_correct_command(creature: CreatureDto):
 #creature_name, caps_creature_pronoun, creature_pronoun, replaced_item
 
 
-def format_correct_naughty_response(creature: CreatureDto, item: ItemDto):
+def format_correct_naughty_response(user, creature: CreatureDto, item: ItemDto):
+  print('usermention=', user.mention)
   return NAUGHTY_CORRECT.format(creature_name=creature.display_name,
     creature_pronoun=creature.pronoun, item_pronoun=get_item_pronoun(item), 
-    item_name=item.display_name, item_rarity=item.rarity)
+    item_name=item.display_name, item_rarity=item.rarity, user_mention=user.mention)
 
 
-def format_correct_nice_response(creature: CreatureDto, item: ItemDto):
+def format_correct_nice_response(user, creature: CreatureDto, item: ItemDto):
   return NICE_CORRECT.format(creature_name=creature.display_name,
     caps_creature_pronoun=creature.pronoun.capitalize(), creature_pronoun=creature.pronoun,
     item_pronoun=get_item_pronoun(item),
-    item_name=item.display_name, item_rarity=item.rarity)
+    item_name=item.display_name, item_rarity=item.rarity, user_mention=user.mention)
 
 
-def format_incorrect_naughty_response(creature: CreatureDto, item: ItemDto):
+def format_incorrect_naughty_response(user, creature: CreatureDto, item: ItemDto):
   return NICE_INCORRECT.format(creature_name=creature.display_name,
     caps_creature_pronoun=creature.pronoun.capitalize(), creature_pronoun=creature.pronoun,
-    replaced_item=item.display_name)
+    replaced_item=item.display_name, user_mention=user.mention)
 
 
-def format_incorrect_nice_response(creature: CreatureDto, item: ItemDto):
+def format_incorrect_nice_response(user, creature: CreatureDto, item: ItemDto):
   return NAUGHTY_INCORRECT.format(creature_name=creature.display_name,
     caps_creature_pronoun=creature.pronoun.capitalize(), creature_pronoun=creature.pronoun,
-    replaced_item=item.display_name)
+    replaced_item=item.display_name, user_mention=user.mention)
 
 
 def format_spawn_description(creature: CreatureDto):
@@ -118,7 +120,7 @@ def check_if_command_correct(user_message, creature: CreatureDto):
     raise Exception('Creature was neither nice or naughty!')
 
 
-def get_bot_response(is_correct_reply: bool, dao: AbstractDao, user_message, creature: CreatureDto, item: ItemDto):
+def get_bot_response(user, is_correct_reply: bool, dao: AbstractDao, user_message, creature: CreatureDto, item: ItemDto):
   server_id = user_message.guild.id
   player_id = user_message.author.id
   
@@ -129,9 +131,9 @@ def get_bot_response(is_correct_reply: bool, dao: AbstractDao, user_message, cre
       #give player the item
       dao.add_item_to_player(server_id, player_id, item.id)
       if creature.status == 'nice':
-        return format_correct_nice_response(creature, item)
+        return format_correct_nice_response(user, creature, item)
       elif creature.status == 'naughty':
-        return format_correct_naughty_response(creature, item)
+        return format_correct_naughty_response(user, creature, item)
       else:
         raise Exception('Creature was neither nice or naughty!')
   else:
@@ -139,13 +141,13 @@ def get_bot_response(is_correct_reply: bool, dao: AbstractDao, user_message, cre
     popped_item = dao.replace_player_item_with_coal(server_id, player_id)
     if popped_item is not None:      
       if creature.status == 'nice': 
-          return format_incorrect_nice_response(creature, item)
+          return format_incorrect_nice_response(user, creature, item)
       elif creature.status == 'naughty':
-          return format_incorrect_naughty_response(creature, item)
+          return format_incorrect_naughty_response(user, creature, item)
       else:
         raise Exception('Creature was neither nice or naughty!')
     else:
-      return '{} tried to replace one of your items with coal, but your inventory is empty. ' \
+      return 'Wrong! {} tried to replace one of your items with coal, but your inventory is empty. ' \
                       'Maybe coal isn\'t so bad after all...'.format(creature.display_name) 
 
 
