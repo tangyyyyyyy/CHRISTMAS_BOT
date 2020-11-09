@@ -1,7 +1,7 @@
 import random
 from os import getcwd
 import discord
-from api import user
+from cogs import user
 
 from constants.globals import ChristmasColor
 from constants.messages import (CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, 

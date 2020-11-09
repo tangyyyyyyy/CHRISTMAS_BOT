@@ -4,7 +4,7 @@ from dtos.creature import CreatureDto
 from dtos.item import ItemDto
 import discord
 from constants.globals import ChristmasColor
-from api import user
+from cogs import user
 
 
 def empty_inventory(user):
