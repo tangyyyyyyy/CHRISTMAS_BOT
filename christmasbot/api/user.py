@@ -1,7 +1,7 @@
 from constants.messages import HELP_MESSAGE
 from daos.abstract_dao import AbstractDao
 from daos.memory_dao import MemoryDao
-from helpers.response_formatter import format_inventory
+from helpers.user import format_inventory
 
 
 async def handle_help(message, dao: AbstractDao, tokens: list[str]):

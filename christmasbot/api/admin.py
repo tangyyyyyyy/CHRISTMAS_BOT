@@ -1,55 +1,34 @@
 import discord
-from constants.globals import ChristmasColor
 
-from constants.messages import BAD_COMMAND_MESSAGE
+from constants.globals import ChristmasColor
+from constants.messages import ADMIN_DISABLE_RESPONSE, ADMIN_ENABLE_RESPONSE, BAD_COMMAND_MESSAGE
 from daos.abstract_dao import AbstractDao
+from helpers.admin import format_bad_command_response, format_no_permissions_response, is_user_admin
 
 
 async def handle_enable_channel(message, dao: AbstractDao, tokens: list[str]):
   if len(tokens) > 1:
-    return BAD_COMMAND_MESSAGE
-  if dao.enable_channel(message.guild.id, message.channel.id) == None:
-    response = discord.Embed(
-      title='I\'m already enabled on this channel!',
-      description='Christmas creatures are already coming here!',
-      color=discord.Colour(ChristmasColor.RED)
-    )
+    response = format_bad_command_response(message.author)
+  elif not is_user_admin(message.author, message.channel):
+    response = format_no_permissions_response(message.author)
   else:
     print('Enabled channel')
-    response = discord.Embed(
-      title='Christmas Bot is now enabled on this channel!',
-      description='Christmas creatures will now start coming here!',
-      color=discord.Colour(ChristmasColor.GREEN)
-    )
-  response.set_author(
-      name='Christmas Bot',
-      icon_url='https://i.imgur.com/YZ6v1jw.png',
-      url='https://github.com/tangyyyyyyy/CHRISTMAS_BOT'
-  )
+    dao.enable_channel(message.guild.id, message.channel.id)
+    response = ADMIN_ENABLE_RESPONSE
+  
   await message.channel.send(embed=response) 
   
 
 async def handle_disable_channel(message, dao: AbstractDao, tokens: list[str]):
   if len(tokens) > 1:
-    return BAD_COMMAND_MESSAGE
-  if dao.disable_channel(message.guild.id, message.channel.id) == None:
-    response = discord.Embed(
-      title='I\'m already disabled on this channel!',
-      description='Christmas creatures aren\'t coming here already!',
-      color=discord.Colour(ChristmasColor.RED)
-    )
+    response = format_bad_command_response(message.author)
+  elif not is_user_admin(message.author, message.channel):
+    response = format_no_permissions_response(message.author)
   else:
     print('Disabled channel')
-    response = discord.Embed(
-      title='Christmas Bot is now disabled on this channel!',
-      description='Christmas creatures will no longer come here!',
-      color=discord.Colour(ChristmasColor.GREEN)
-    )
-  response.set_author(
-      name='Christmas Bot',
-      icon_url='https://i.imgur.com/YZ6v1jw.png',
-      url='https://github.com/tangyyyyyyy/CHRISTMAS_BOT'
-  )
+    dao.disable_channel(message.guild.id, message.channel.id)
+    response = ADMIN_DISABLE_RESPONSE
+  
   await message.channel.send(embed=response) 
 
 
