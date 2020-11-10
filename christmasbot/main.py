@@ -47,7 +47,7 @@ class ChristmasBot(discord.Client):
     else:
       # General message - calculate if the bot should respond
       dao = get_dao()
-      server_config = dao.get_server(server_id)
+      server_config = await dao.get_server(server_id)
       if ((channel_id in server_config.enabled_channels) and
         (not has_ongoing_spawn(server_id, channel_id))):
         # channel where message is in has enabled spawns, calculate chance %
@@ -55,8 +55,8 @@ class ChristmasBot(discord.Client):
         if roll <= server_config.spawn_rate_percent:
           # roll was successful, respond with spawn message
           print('Spawning creature...')
-          creature = get_random_creature()
-          item = get_random_item(creature)
+          creature = await get_random_creature()
+          item = await get_random_item(creature)
           # lock spawn so 2 spawns don't happen at the same time
           add_ongoing_spawn(server_id, channel_id, creature)
           bot_message = await message.channel.send(embed=create_creature_message(creature, item))
@@ -72,7 +72,7 @@ class ChristmasBot(discord.Client):
             )
 
             is_correct_reply = check_if_command_correct(reply, creature)
-            bot_response = create_bot_response(is_correct_reply, reply, creature, item)
+            bot_response = await create_bot_response(is_correct_reply, reply, creature, item)
             
             await reply.delete(delay=5)
           except asyncio.TimeoutError:

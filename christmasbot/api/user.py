@@ -10,8 +10,8 @@ async def handle_help(message, tokens: list[str]):
 async def handle_inventory(message, tokens: list[str]):
   dao = get_dao()
   server_id = message.guild.id
-  author_profile = dao.get_player(server_id, message.author.id).inventory
-  detailed_inventory = dao.get_items(author_profile)
+  author_profile = await dao.get_player(server_id, message.author.id)
+  detailed_inventory = await dao.get_items(author_profile.inventory)
   if detailed_inventory is None:
     raise Exception('Items in player\'s inventory do not exist!')
   response = format_inventory(detailed_inventory)

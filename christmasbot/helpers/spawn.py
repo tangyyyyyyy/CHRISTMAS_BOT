@@ -58,17 +58,17 @@ def format_spawn_description(creature: CreatureDto):
   return CREATURE_SPAWN_DESCRIPTION.format(creature_command=get_correct_command(creature))
 
 
-def get_random_creature():
+async def get_random_creature():
   dao = get_dao()
-  return dao.get_random_creature()
+  return await dao.get_random_creature()
 
 
-def get_random_item(creature: CreatureDto) -> ItemDto:
+async def get_random_item(creature: CreatureDto) -> ItemDto:
   dao = get_dao()
   item_pool = creature.items
   if item_pool == []:
     raise Exception('There were no items for creature {}!'.format(creature.id))
-  item = dao.get_item(random.choice(item_pool))
+  item = await dao.get_item(random.choice(item_pool))
   if item is None:
     raise Exception('Creature {} has an item that is invalid'.format(creature.id))
   return item
@@ -122,7 +122,7 @@ def check_if_command_correct(user_message, creature: CreatureDto):
     raise Exception('Creature was neither nice or naughty!')
 
 
-def create_bot_response(is_correct_reply: bool, user_message, creature: CreatureDto, item: ItemDto):
+async def create_bot_response(is_correct_reply: bool, user_message, creature: CreatureDto, item: ItemDto):
   server_id = user_message.guild.id
   player_id = user_message.author.id
   dao = get_dao()
@@ -130,11 +130,12 @@ def create_bot_response(is_correct_reply: bool, user_message, creature: Creature
   if is_correct_reply:
     title = CREATURE_IDENTIFIED_TITLE
     color = ChristmasColor.GREEN
-    if item.id in dao.get_player(server_id, player_id).inventory:
+    player = await dao.get_player(server_id, player_id)
+    if item.id in player.inventory:
       description = 'You already had that item :('
     else:
       #give player the item
-      dao.add_item_to_player(server_id, player_id, item.id)
+      await dao.add_item_to_player(server_id, player_id, item.id)
       if creature.status == 'nice':
         description = format_correct_nice_response(creature, item)
       elif creature.status == 'naughty':
@@ -145,7 +146,7 @@ def create_bot_response(is_correct_reply: bool, user_message, creature: Creature
     title = CREATURE_MISIDENTIFIED_TITLE
     color = ChristmasColor.RED
     # replace it with coal if you have an item
-    popped_item = dao.replace_player_item_with_coal(server_id, player_id)
+    popped_item = await dao.replace_player_item_with_coal(server_id, player_id)
     if popped_item is not None:      
       if creature.status == 'nice': 
           description = format_incorrect_nice_response(creature, item)

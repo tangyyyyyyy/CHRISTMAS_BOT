@@ -10,7 +10,7 @@ class AbstractDao(ABC):
   # Admin Config
 
   @abstractmethod
-  def enable_channel(self, server: int, channel: int):
+  async def enable_channel(self, server: int, channel: int):
     """ Enables a channel for the bot to spawn creaatures.
 
     TODO enable multiple channels
@@ -24,7 +24,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def disable_channel(self, server: int, channel: int):
+  async def disable_channel(self, server: int, channel: int):
     """ Enables a channel for the bot to spawn creaatures
 
     TODO disable multiple channels
@@ -38,7 +38,7 @@ class AbstractDao(ABC):
     pass
   
   @abstractmethod
-  def change_despawn_time(self, server: int, new_despawn_time: int):
+  async def change_despawn_time(self, server: int, new_despawn_time: int):
     """ Enables a channel for the bot to spawn creaatures
 
     Parameters:
@@ -50,7 +50,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def change_spawn_rate(self, server: int, new_spawn_rate: int):
+  async def change_spawn_rate(self, server: int, new_spawn_rate: int):
     """ Enables a channel for the bot to spawn creaatures
 
     Parameters:
@@ -64,7 +64,7 @@ class AbstractDao(ABC):
   # User Interactions
 
   @abstractmethod
-  def get_leaderboard(self, server: int, num_results: int, page: int):
+  async def get_leaderboard(self, server: int, num_results: int, page: int):
     """ Gets a list of players for server sorted by score
     TODO add sorting by most recent acquired item time
 
@@ -78,7 +78,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_player(self, server: int, player: int) -> PlayerDto:
+  async def get_player(self, server: int, player: int) -> PlayerDto:
     """ Gets info for a player
 
     Parameters:
@@ -90,7 +90,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_server(self, server: int) -> ServerConfigDto:
+  async def get_server(self, server: int) -> ServerConfigDto:
     """ Gets the tree of a server
 
     Parameters:
@@ -103,7 +103,7 @@ class AbstractDao(ABC):
   # Spawn/Item Interactions
 
   @abstractmethod
-  def add_item_to_player(self, server: int, player: int, item: str):
+  async def add_item_to_player(self, server: int, player: int, item: str):
     """Adds an item to the user's inventory. If the user doesn't exist, creates it.
 
     Parameters:
@@ -116,7 +116,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def replace_player_item_with_coal(self, server: int, player: int):
+  async def replace_player_item_with_coal(self, server: int, player: int):
     """ Replaces one of the player's items with coal randomly.
     If the user doesn't exist or has an empty inventory, no items are removed but 1 coal is added.
     TODO make this based on rarity of items
@@ -133,7 +133,7 @@ class AbstractDao(ABC):
   # Bot specific DAO calls
 
   @abstractmethod
-  def get_creature(self, creature: str) -> CreatureDto:
+  async def get_creature(self, creature: str) -> CreatureDto:
     """ Gets creature based on its ID.
 
     Parameters:
@@ -144,7 +144,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_random_creature(self) -> CreatureDto:
+  async def get_random_creature(self) -> CreatureDto:
     """ Gets a random creature dto
 
     Returns the creature dto, or throws an exception if there are no creatures available
@@ -152,7 +152,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_item(self, item: str) -> ItemDto:
+  async def get_item(self, item: str) -> ItemDto:
     """ Gets item based on its ID.
 
     Parameters:
@@ -163,7 +163,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_items(self, items: list[str]) -> list[ItemDto]:
+  async def get_items(self, items: list[str]) -> list[ItemDto]:
     """ List get_item but for multiple items
 
     Parameters:

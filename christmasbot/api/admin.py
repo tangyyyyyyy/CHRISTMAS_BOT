@@ -11,7 +11,7 @@ async def handle_enable_channel(message, tokens: list[str]):
   else:
     dao = get_dao()
     print('Enabled channel')
-    dao.enable_channel(message.guild.id, message.channel.id)
+    await dao.enable_channel(message.guild.id, message.channel.id)
     response = ADMIN_ENABLE_RESPONSE
   
   await message.channel.send(embed=response) 
@@ -25,7 +25,7 @@ async def handle_disable_channel(message, tokens: list[str]):
   else:
     dao = get_dao()
     print('Disabled channel')
-    dao.disable_channel(message.guild.id, message.channel.id)
+    await dao.disable_channel(message.guild.id, message.channel.id)
     response = ADMIN_DISABLE_RESPONSE
   
   await message.channel.send(embed=response) 
@@ -40,7 +40,7 @@ async def handle_change_despawn_time(message, tokens):
   except:
     pass
   dao = get_dao()
-  if dao.change_despawn_time(message.guild.id, new_despawn_time) == None:
+  if await dao.change_despawn_time(message.guild.id, new_despawn_time) == None:
     response = BAD_COMMAND_MESSAGE
   else:
     print('Despawn time changed to {}'.format(new_despawn_time))
@@ -57,7 +57,7 @@ async def handle_change_spawn_rate(message, tokens: list[str]):
   except:
     pass
   dao = get_dao()
-  if dao.change_spawn_rate(message.guild.id, new_spawn_rate) == None:
+  if await dao.change_spawn_rate(message.guild.id, new_spawn_rate) == None:
     response = BAD_COMMAND_MESSAGE
   else:
     print('Spawn rate changed to {}'.format(new_spawn_rate))

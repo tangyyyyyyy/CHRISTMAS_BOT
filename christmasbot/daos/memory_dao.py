@@ -44,7 +44,7 @@ class MemoryDao(AbstractDao):
 
   # Admin Config
 
-  def enable_channel(self, server, channel):
+  async def enable_channel(self, server, channel):
     self.create_server_entry_if_nonexistent(server)
     if channel not in self.server_configs[server].enabled_channels:
       # not enabled yet
@@ -54,7 +54,7 @@ class MemoryDao(AbstractDao):
       # already enabled
       return None
 
-  def disable_channel(self, server, channel):
+  async def disable_channel(self, server, channel):
     self.create_server_entry_if_nonexistent(server)
     if channel in self.server_configs[server].enabled_channels:
       # enabled; remove
@@ -64,7 +64,7 @@ class MemoryDao(AbstractDao):
       # already disabled
       return None
 
-  def change_despawn_time(self, server, new_despawn_time):
+  async def change_despawn_time(self, server, new_despawn_time):
     self.create_server_entry_if_nonexistent(server)
     if new_despawn_time < 0:
       return None
@@ -72,7 +72,7 @@ class MemoryDao(AbstractDao):
       self.server_configs[server].despawn_time = new_despawn_time
       return new_despawn_time
 
-  def change_spawn_rate(self, server, new_spawn_rate):
+  async def change_spawn_rate(self, server, new_spawn_rate):
     self.create_server_entry_if_nonexistent(server)
     if new_spawn_rate < 0 or new_spawn_rate > 100:
       return None
@@ -83,23 +83,23 @@ class MemoryDao(AbstractDao):
 
   # User Interactions
 
-  def get_leaderboard(self, server, num_results, page):
+  async def get_leaderboard(self, server, num_results, page):
     self.create_server_entry_if_nonexistent(server)
     pass
 
-  def get_player(self, server, player):
+  async def get_player(self, server, player):
     self.create_server_entry_if_nonexistent(server)
     self.create_player_entry_if_nonexistent(server, player)
     return self.server_players[server][player]
 
-  def get_server(self, server):
+  async def get_server(self, server):
     self.create_server_entry_if_nonexistent(server)
     return self.server_configs[server]
 
 
   # Spawn/Item Interactions
 
-  def add_item_to_player(self, server, player, item):
+  async def add_item_to_player(self, server, player, item):
     self.create_server_entry_if_nonexistent(server)
     self.create_player_entry_if_nonexistent(server, player)
     if item not in self.server_players[server][player].inventory:
@@ -110,7 +110,7 @@ class MemoryDao(AbstractDao):
       return None
 
 
-  def replace_player_item_with_coal(self, server, player):
+  async def replace_player_item_with_coal(self, server, player):
     self.create_server_entry_if_nonexistent(server)
     self.create_player_entry_if_nonexistent(server, player)
     self.server_players[server][player].coal_count += 1
@@ -125,21 +125,21 @@ class MemoryDao(AbstractDao):
       return None
 
 
-  def get_creature(self, creature: str):
+  async def get_creature(self, creature: str):
     if creature in self.creatures:
       return self.creatures[creature]
     else:
       raise Exception('Creature {} does not exist!'.format(creature))
 
 
-  def get_random_creature(self):
+  async def get_random_creature(self):
     if len(self.creatures) == 0:
       raise Exception('No creatures exist to choose from!')
     key_chosen = random.choice(list(self.creatures.keys()))
     return self.creatures.get(key_chosen)
 
 
-  def get_items(self, items: list[str]):
+  async def get_items(self, items: list[str]):
     results = []
     for item in items:
       if item in self.items.keys():
@@ -149,7 +149,7 @@ class MemoryDao(AbstractDao):
     return results
 
 
-  def get_item(self, item: str):
+  async def get_item(self, item: str):
     if item in self.items:
       return self.items[item]
     else:
