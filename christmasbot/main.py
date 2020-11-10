@@ -7,8 +7,8 @@ from api.admin import ADMIN_COMMAND_LIST
 from api.user import USER_COMMAND_LIST
 from constants.globals import DISCORD_TOKEN
 from daos import get_dao
-from helpers.spawn import (check_if_command_correct, create_bot_response, get_random_creature, get_random_item,
-  add_ongoing_spawn, has_ongoing_spawn, remove_ongoing_spawn, create_creature_message, create_post_spawn_message)
+from helpers.spawn import (check_if_command_correct, create_bot_response, create_timeout_message, get_random_creature, get_random_item,
+  add_ongoing_spawn, has_ongoing_spawn, remove_ongoing_spawn, create_creature_message)
 
 def load_command_list():
   command_list = {}
@@ -76,10 +76,10 @@ class ChristmasBot(discord.Client):
             
             await reply.delete(delay=5)
           except asyncio.TimeoutError:
-            bot_response = 'The creature left because you kept it waiting for too long!'
+            bot_response = create_timeout_message(creature)
           finally:
             remove_ongoing_spawn(server_id, channel_id)
-            await bot_message.edit(embed=create_post_spawn_message(creature,bot_response))
+            await bot_message.edit(embed=bot_response)
 
 
 def run():

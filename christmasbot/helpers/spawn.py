@@ -2,10 +2,11 @@ from os import getcwd
 import random
 
 import discord
+from discord.colour import Colour
 
 from constants.globals import ChristmasColor, get_ongoing_spawns
-from constants.messages import (CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, 
-  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT, POST_SPAWN_TITLE)
+from constants.messages import (CREATURE_IDENTIFIED_TITLE, CREATURE_MISIDENTIFIED_TITLE, CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, CREATURE_TIMEOUT_DESCRIPTION, CREATURE_TIMEOUT_TITLE, 
+  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT)
 from daos import get_dao
 from daos.abstract_dao import AbstractDao
 from dtos.creature import CreatureDto
@@ -102,11 +103,11 @@ def create_creature_message(creature: CreatureDto, item: ItemDto):
     )
 
 
-def create_post_spawn_message(creature: CreatureDto, message: str):
+def create_timeout_message(creature: CreatureDto):
   return discord.Embed(
-    title=POST_SPAWN_TITLE,
-    description=message,
-    color=discord.Colour(ChristmasColor.GOLD),
+    title=CREATURE_TIMEOUT_TITLE,
+    description=CREATURE_TIMEOUT_DESCRIPTION,
+    color=discord.Colour(ChristmasColor.RED),
   ).set_image(
     url=creature.img_url
   )
@@ -127,30 +128,41 @@ def create_bot_response(is_correct_reply: bool, user_message, creature: Creature
   dao = get_dao()
   
   if is_correct_reply:
-    if item in dao.get_player(server_id, player_id).inventory:
-      return 'You already had that item :('
+    title = CREATURE_IDENTIFIED_TITLE
+    color = ChristmasColor.GREEN
+    if item.id in dao.get_player(server_id, player_id).inventory:
+      description = 'You already had that item :('
     else:
       #give player the item
       dao.add_item_to_player(server_id, player_id, item.id)
       if creature.status == 'nice':
-        return format_correct_nice_response(creature, item)
+        description = format_correct_nice_response(creature, item)
       elif creature.status == 'naughty':
-        return format_correct_naughty_response(creature, item)
+        description = format_correct_naughty_response(creature, item)
       else:
         raise Exception('Creature was neither nice or naughty!')
   else:
+    title = CREATURE_MISIDENTIFIED_TITLE
+    color = ChristmasColor.RED
     # replace it with coal if you have an item
     popped_item = dao.replace_player_item_with_coal(server_id, player_id)
     if popped_item is not None:      
       if creature.status == 'nice': 
-          return format_incorrect_nice_response(creature, item)
+          description = format_incorrect_nice_response(creature, item)
       elif creature.status == 'naughty':
-          return format_incorrect_naughty_response(creature, item)
+          description = format_incorrect_naughty_response(creature, item)
       else:
         raise Exception('Creature was neither nice or naughty!')
     else:
-      return '{} tried to replace one of your items with coal, but your inventory is empty. ' \
+      description = '{} tried to replace one of your items with coal, but your inventory is empty. ' \
                       'Maybe coal isn\'t so bad after all...'.format(creature.display_name) 
+  return discord.Embed(
+    title=title,
+    description=description,
+    color=discord.Colour(color)
+  ).set_image(
+    url=creature.img_url
+  )
 
 
 

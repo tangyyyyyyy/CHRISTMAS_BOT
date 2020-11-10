@@ -78,7 +78,13 @@ CREATURE_SPAWN_TITLE = ('Someone was impressed by your Christmas spirit and'
 
 CREATURE_SPAWN_DESCRIPTION = ('Let them in with {creature_command}')
 
-POST_SPAWN_TITLE = ('Creature identified!')
+CREATURE_IDENTIFIED_TITLE = ('The creature was identified!')
+
+CREATURE_MISIDENTIFIED_TITLE = ('The creature was misidentified!')
+
+CREATURE_TIMEOUT_TITLE = ('The creature left!')
+
+CREATURE_TIMEOUT_DESCRIPTION = ('You kept it waiting for too long.')
 
 ADMIN_NO_PERMISSIONS_TITLE = ('Only admins can use this command!')
 
