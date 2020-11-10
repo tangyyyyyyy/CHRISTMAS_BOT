@@ -163,7 +163,7 @@ class AbstractDao(ABC):
     pass
 
   @abstractmethod
-  def get_items(self, items: list[str]) -> ItemDto:
+  def get_items(self, items: list[str]) -> list[ItemDto]:
     """ List get_item but for multiple items
 
     Parameters:

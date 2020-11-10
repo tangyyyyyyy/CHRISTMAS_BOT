@@ -1,6 +1,4 @@
 from enum import IntEnum
-from dtos.creature import CreatureDto
-from dtos.item import ItemDto
 
 DISCORD_CLIENT_ID = '773308497538056222'
 DISCORD_TOKEN = ':)notthistime'
@@ -13,3 +11,12 @@ class ChristmasColor(IntEnum):
   GREEN = 0x146B3A
   GOLD = 0xF8B229
   WHITE = 0xFFFFFF
+
+
+ongoing_spawns = None
+
+def get_ongoing_spawns():
+  global ongoing_spawns
+  if ongoing_spawns is None:
+    ongoing_spawns = {}
+  return ongoing_spawns

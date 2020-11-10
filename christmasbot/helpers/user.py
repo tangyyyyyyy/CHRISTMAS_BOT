@@ -1,11 +1,13 @@
+import discord
+
 from constants.messages import (NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, 
   NAUGHTY_INCORRECT, CREATURE_SPAWN_DESCRIPTION)
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
-import discord
 from constants.globals import ChristmasColor
 
-def format_inventory(inventory: [ItemDto]):
+
+def format_inventory(inventory: list[ItemDto]):
   formatted_string = '\n'
   for item in inventory:
     add_to_formatted_string = item.display_name + '\n'

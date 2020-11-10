@@ -1,11 +1,12 @@
-import random
 from os import getcwd
-import discord
-from api import user
+import random
 
-from constants.globals import ChristmasColor
+import discord
+
+from constants.globals import ChristmasColor, get_ongoing_spawns
 from constants.messages import (CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, 
   NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT, POST_SPAWN_TITLE)
+from daos import get_dao
 from daos.abstract_dao import AbstractDao
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
@@ -56,11 +57,13 @@ def format_spawn_description(creature: CreatureDto):
   return CREATURE_SPAWN_DESCRIPTION.format(creature_command=get_correct_command(creature))
 
 
-def get_random_creature(dao: AbstractDao):
+def get_random_creature():
+  dao = get_dao()
   return dao.get_random_creature()
 
 
-def get_random_item(dao: AbstractDao, creature: CreatureDto) -> ItemDto:
+def get_random_item(creature: CreatureDto) -> ItemDto:
+  dao = get_dao()
   item_pool = creature.items
   if item_pool == []:
     raise Exception('There were no items for creature {}!'.format(creature.id))
@@ -70,20 +73,20 @@ def get_random_item(dao: AbstractDao, creature: CreatureDto) -> ItemDto:
   return item
 
 
-def has_ongoing_spawn(spawn_dict: dict[int, dict[int, CreatureDto]], 
-  server_id: int, channel_id: int):
+def has_ongoing_spawn(server_id: int, channel_id: int):
+  spawn_dict = get_ongoing_spawns()
   return server_id in spawn_dict and channel_id in spawn_dict[server_id]
 
 
-def add_ongoing_spawn(spawn_dict: dict[int, dict[int, CreatureDto]], 
-  server_id: int, channel_id: int, creature: CreatureDto):
+def add_ongoing_spawn(server_id: int, channel_id: int, creature: CreatureDto):
+  spawn_dict = get_ongoing_spawns()
   if server_id not in spawn_dict:
     spawn_dict[server_id] = {}    
   spawn_dict[server_id][channel_id] = creature
 
 
-def remove_ongoing_spawn(spawn_dict: dict[int, dict[int, CreatureDto]], 
-  server_id: int, channel_id: int):
+def remove_ongoing_spawn(server_id: int, channel_id: int):
+  spawn_dict = get_ongoing_spawns()
   spawn_dict[server_id].pop(channel_id)
 
 
@@ -118,9 +121,10 @@ def check_if_command_correct(user_message, creature: CreatureDto):
     raise Exception('Creature was neither nice or naughty!')
 
 
-def get_bot_response(is_correct_reply: bool, dao: AbstractDao, user_message, creature: CreatureDto, item: ItemDto):
+def create_bot_response(is_correct_reply: bool, user_message, creature: CreatureDto, item: ItemDto):
   server_id = user_message.guild.id
   player_id = user_message.author.id
+  dao = get_dao()
   
   if is_correct_reply:
     if item in dao.get_player(server_id, player_id).inventory:

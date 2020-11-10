@@ -1,14 +1,14 @@
 from constants.messages import HELP_MESSAGE
-from daos.abstract_dao import AbstractDao
-from daos.memory_dao import MemoryDao
+from daos import get_dao
 from helpers.user import format_inventory
 
 
-async def handle_help(message, dao: AbstractDao, tokens: list[str]):
+async def handle_help(message, tokens: list[str]):
   await message.channel.send(embed=HELP_MESSAGE)
 
 
-async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
+async def handle_inventory(message, tokens: list[str]):
+  dao = get_dao()
   server_id = message.guild.id
   author_profile = dao.get_player(server_id, message.author.id).inventory
   detailed_inventory = dao.get_items(author_profile)
@@ -18,12 +18,12 @@ async def handle_inventory(message, dao: MemoryDao, tokens: list[str]):
   await message.channel.send(embed=response)
 
 
-async def handle_leaderboard(message, dao: AbstractDao, tokens: list[str]):
+async def handle_leaderboard(message, tokens: list[str]):
   response = 'leaderboard placeholder'
   await message.channel.send(response) 
 
 
-async def handle_tree(message, dao: AbstractDao, tokens: list[str]):
+async def handle_tree(message, tokens: list[str]):
   response = 'tree placeholder'
   await message.channel.send(response) 
 

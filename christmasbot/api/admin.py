@@ -1,17 +1,15 @@
-import discord
-
-from constants.globals import ChristmasColor
 from constants.messages import ADMIN_DISABLE_RESPONSE, ADMIN_ENABLE_RESPONSE, BAD_COMMAND_MESSAGE
-from daos.abstract_dao import AbstractDao
+from daos import get_dao
 from helpers.admin import format_bad_command_response, format_no_permissions_response, is_user_admin
 
 
-async def handle_enable_channel(message, dao: AbstractDao, tokens: list[str]):
+async def handle_enable_channel(message, tokens: list[str]):
   if len(tokens) > 1:
     response = format_bad_command_response(message.author)
   elif not is_user_admin(message.author, message.channel):
     response = format_no_permissions_response(message.author)
   else:
+    dao = get_dao()
     print('Enabled channel')
     dao.enable_channel(message.guild.id, message.channel.id)
     response = ADMIN_ENABLE_RESPONSE
@@ -19,12 +17,13 @@ async def handle_enable_channel(message, dao: AbstractDao, tokens: list[str]):
   await message.channel.send(embed=response) 
   
 
-async def handle_disable_channel(message, dao: AbstractDao, tokens: list[str]):
+async def handle_disable_channel(message, tokens: list[str]):
   if len(tokens) > 1:
     response = format_bad_command_response(message.author)
   elif not is_user_admin(message.author, message.channel):
     response = format_no_permissions_response(message.author)
   else:
+    dao = get_dao()
     print('Disabled channel')
     dao.disable_channel(message.guild.id, message.channel.id)
     response = ADMIN_DISABLE_RESPONSE
@@ -32,7 +31,7 @@ async def handle_disable_channel(message, dao: AbstractDao, tokens: list[str]):
   await message.channel.send(embed=response) 
 
 
-async def handle_change_despawn_time(message, dao: AbstractDao, tokens):
+async def handle_change_despawn_time(message, tokens):
   if len(tokens) > 2:
     return BAD_COMMAND_MESSAGE
   new_despawn_time = -1
@@ -40,6 +39,7 @@ async def handle_change_despawn_time(message, dao: AbstractDao, tokens):
     new_despawn_time = int(tokens[1])
   except:
     pass
+  dao = get_dao()
   if dao.change_despawn_time(message.guild.id, new_despawn_time) == None:
     response = BAD_COMMAND_MESSAGE
   else:
@@ -48,7 +48,7 @@ async def handle_change_despawn_time(message, dao: AbstractDao, tokens):
   await message.channel.send(response) 
 
 
-async def handle_change_spawn_rate(message, dao: AbstractDao, tokens: list[str]):
+async def handle_change_spawn_rate(message, tokens: list[str]):
   if len(tokens) > 2:
     return BAD_COMMAND_MESSAGE
   new_spawn_rate = -1
@@ -56,6 +56,7 @@ async def handle_change_spawn_rate(message, dao: AbstractDao, tokens: list[str])
     new_spawn_rate = int(tokens[1])
   except:
     pass
+  dao = get_dao()
   if dao.change_spawn_rate(message.guild.id, new_spawn_rate) == None:
     response = BAD_COMMAND_MESSAGE
   else:
@@ -64,7 +65,7 @@ async def handle_change_spawn_rate(message, dao: AbstractDao, tokens: list[str])
   await message.channel.send(response) 
 
 
-async def handle_refresh_role(message, dao: AbstractDao, tokens: list[str]):
+async def handle_refresh_role(message, tokens: list[str]):
   response = 'Refresh role placeholder'
   await message.channel.send(response) 
 
