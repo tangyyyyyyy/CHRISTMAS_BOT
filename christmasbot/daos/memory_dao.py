@@ -32,7 +32,7 @@ class MemoryDao(AbstractDao):
   # Create new server entry
   def create_server_entry_if_nonexistent(self, server: int):
     if server not in self.server_configs.keys():
-      self.server_configs[server] = ServerConfigDto(server)
+      self.server_configs[server] = ServerConfigDto(server, items=[], enabled_channels=[])
       self.server_players[server] = {}
 
   # Create new player entry

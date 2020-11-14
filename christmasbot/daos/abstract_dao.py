@@ -91,7 +91,7 @@ class AbstractDao(ABC):
 
   @abstractmethod
   async def get_server(self, server: int) -> ServerConfigDto:
-    """ Gets the tree of a server
+    """ Gets a server config
 
     Parameters:
     - server (int): the discord ID of the server
