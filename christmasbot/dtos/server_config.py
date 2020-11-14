@@ -2,7 +2,7 @@ from constants.globals import DEFAULT_DESPAWN_TIME_SECONDS, DEFAULT_SPAWN_RATE_P
 
 
 class ServerConfigDto:
-  def __init__(self, server_id, despawn_time_seconds: int=DEFAULT_DESPAWN_TIME_SECONDS, 
+  def __init__(self, server_id: int, despawn_time_seconds: int=DEFAULT_DESPAWN_TIME_SECONDS, 
     spawn_rate_percent: int=DEFAULT_SPAWN_RATE_PERCENT, 
     enabled_channels: list[str]=[], items: list[str]=[]):
     self.id = server_id

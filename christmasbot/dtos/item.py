@@ -11,7 +11,7 @@ class ItemRarity(IntEnum):
 
 
 class ItemDto:
-  def __init__(self, item_id: str, display_name: str, img_url: str, rarity: ItemRarity):
+  def __init__(self, item_id: str, display_name: str, rarity: ItemRarity, img_url: str=''):
     self.id = item_id
     self.display_name = display_name
     self.img_url = img_url

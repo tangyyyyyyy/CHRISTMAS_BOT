@@ -20,11 +20,11 @@ class MemoryDao(AbstractDao):
     }
     self.items: dict[str, ItemDto] = {
       'gumdrop_ornament': ItemDto('gumdrop_ornament', 'Gumdrop Ornament', 
-        'https://i.imgur.com/1CnajlU.png', ItemRarity.RARE),
+        ItemRarity.RARE, 'https://i.imgur.com/1CnajlU.png'),
       'iced_bowtie': ItemDto('iced_bowtie', 'Iced Bowtie', 
-        'https://i.imgur.com/1CnajlU.png', ItemRarity.SPECIAL),
+        ItemRarity.SPECIAL, 'https://i.imgur.com/1CnajlU.png'),
       'dash_of_cinnamon': ItemDto('dash_of_cinnamon', 'Dash of Cinnamon', 
-        'https://i.imgur.com/1CnajlU.png', ItemRarity.COMMON)
+        ItemRarity.COMMON, 'https://i.imgur.com/1CnajlU.png')
     }
 
   # Helpers
@@ -39,7 +39,7 @@ class MemoryDao(AbstractDao):
   # Precondition: server entry exists
   def create_player_entry_if_nonexistent(self, server: int, player: int):
     if player not in self.server_players[server].keys():
-      self.server_players[server][player] = PlayerDto(player, inventory=[])
+      self.server_players[server][player] = PlayerDto(server, player, inventory=[])
 
 
   # Admin Config
@@ -104,6 +104,7 @@ class MemoryDao(AbstractDao):
     self.create_player_entry_if_nonexistent(server, player)
     if item not in self.server_players[server][player].inventory:
       self.server_players[server][player].inventory.append(item)
+      self.server_players[server][player].score += 1
       return item
     else:
       # player already has item
@@ -119,6 +120,7 @@ class MemoryDao(AbstractDao):
       inventory_size = len(self.server_players[server][player].inventory)
       index_to_remove = random.randrange(inventory_size)
       removed_item = self.server_players[server][player].inventory.pop(index_to_remove)
+      self.server_players[server][player].score -= 1
       return removed_item
     else:
       # player has no items

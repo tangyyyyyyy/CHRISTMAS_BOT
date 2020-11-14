@@ -10,6 +10,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 "discord.py" = "^1.5.1"
+psycopg2 = "^2.8.6"
 
 [tool.poetry.dev-dependencies]
 
