@@ -39,7 +39,7 @@ class MemoryDao(AbstractDao):
   # Precondition: server entry exists
   def create_player_entry_if_nonexistent(self, server: int, player: int):
     if player not in self.server_players[server].keys():
-      self.server_players[server][player] = PlayerDto(player)
+      self.server_players[server][player] = PlayerDto(player, inventory=[])
 
 
   # Admin Config
