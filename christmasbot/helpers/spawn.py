@@ -6,7 +6,7 @@ from discord.colour import Colour
 
 from constants.globals import ChristmasColor, get_ongoing_spawns
 from constants.messages import (CREATURE_IDENTIFIED_TITLE, CREATURE_MISIDENTIFIED_TITLE, CREATURE_SPAWN_TITLE, CREATURE_SPAWN_DESCRIPTION, CREATURE_TIMEOUT_DESCRIPTION, CREATURE_TIMEOUT_TITLE, 
-  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT)
+  NICE_CORRECT, NAUGHTY_CORRECT, NICE_INCORRECT, NAUGHTY_INCORRECT, UNKNOWN_SPAWN)
 from daos import get_dao
 from daos.abstract_dao import AbstractDao
 from dtos.creature import CreatureDto
@@ -91,9 +91,7 @@ def remove_ongoing_spawn(server_id: int, channel_id: int):
   spawn_dict[server_id].pop(channel_id)
 
 
-def create_creature_message(creature: CreatureDto, item: ItemDto):
-    print('urls=', creature.img_url, ' ', item.img_url)
-    print('current dir=', getcwd())
+def create_creature_message(creature: CreatureDto):
     return discord.Embed(
       title=CREATURE_SPAWN_TITLE,
       description=format_spawn_description(creature),
@@ -102,14 +100,23 @@ def create_creature_message(creature: CreatureDto, item: ItemDto):
       url=creature.img_url
     )
 
+def create_blob_message(creature: CreatureDto):
+  return discord.Embed(
+    title='An unexpected guest!',
+    description=UNKNOWN_SPAWN.format(status=creature.status),
+    color=discord.Colour(ChristmasColor.WHITE),
+  ).set_image(
+    url='https://i.imgur.com/3SdgfhJ.png'
+  )
 
-def create_timeout_message(creature: CreatureDto):
+
+def create_timeout_message():
   return discord.Embed(
     title=CREATURE_TIMEOUT_TITLE,
     description=CREATURE_TIMEOUT_DESCRIPTION,
     color=discord.Colour(ChristmasColor.RED),
   ).set_image(
-    url=creature.img_url
+    url='https://i.imgur.com/3SdgfhJ.png'
   )
 
 def check_if_command_correct(user_message, creature: CreatureDto):
