@@ -56,10 +56,9 @@ class ChristmasBot(discord.Client):
           # roll was successful, respond with spawn message
           print('Spawning creature...')
           creature = await get_random_creature()
-          item = await get_random_item(creature)
           # lock spawn so 2 spawns don't happen at the same time
           add_ongoing_spawn(server_id, channel_id, creature)
-          bot_message = await message.channel.send(embed=create_creature_message(creature, item))
+          bot_message = await message.channel.send(embed=create_creature_message(creature))
 
           def message_is_nice_or_naughty(message):
             return (message.guild.id == server_id and message.channel.id == channel_id
@@ -72,7 +71,7 @@ class ChristmasBot(discord.Client):
             )
 
             is_correct_reply = check_if_command_correct(reply, creature)
-            bot_response = await create_bot_response(is_correct_reply, reply, creature, item)
+            bot_response = await create_bot_response(is_correct_reply, reply, creature)
             
             await reply.delete(delay=5)
           except asyncio.TimeoutError:

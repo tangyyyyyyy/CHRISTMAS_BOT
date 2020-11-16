@@ -91,8 +91,7 @@ def remove_ongoing_spawn(server_id: int, channel_id: int):
   spawn_dict[server_id].pop(channel_id)
 
 
-def create_creature_message(creature: CreatureDto, item: ItemDto):
-    print('urls=', creature.img_url, ' ', item.img_url)
+def create_creature_message(creature: CreatureDto):
     print('current dir=', getcwd())
     return discord.Embed(
       title=CREATURE_SPAWN_TITLE,
@@ -122,7 +121,7 @@ def check_if_command_correct(user_message, creature: CreatureDto):
     raise Exception('Creature was neither nice or naughty!')
 
 
-async def create_bot_response(is_correct_reply: bool, user_message, creature: CreatureDto, item: ItemDto):
+async def create_bot_response(is_correct_reply: bool, user_message, creature: CreatureDto):
   server_id = user_message.guild.id
   player_id = user_message.author.id
   dao = get_dao()
@@ -130,6 +129,8 @@ async def create_bot_response(is_correct_reply: bool, user_message, creature: Cr
   if is_correct_reply:
     title = CREATURE_IDENTIFIED_TITLE
     color = ChristmasColor.GREEN
+    item = await get_random_item(creature)
+
     player = await dao.get_player(server_id, player_id)
     if item.id in player.inventory:
       description = 'You already had that item :('
@@ -146,8 +147,9 @@ async def create_bot_response(is_correct_reply: bool, user_message, creature: Cr
     title = CREATURE_MISIDENTIFIED_TITLE
     color = ChristmasColor.RED
     # replace it with coal if you have an item
-    popped_item = await dao.replace_player_item_with_coal(server_id, player_id)
-    if popped_item is not None:      
+    popped_item_id = await dao.replace_player_item_with_coal(server_id, player_id)
+    if popped_item_id is not None:      
+      item = await dao.get_item(popped_item_id)
       if creature.status == 'nice': 
           description = format_incorrect_nice_response(creature, item)
       elif creature.status == 'naughty':
