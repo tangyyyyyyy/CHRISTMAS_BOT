@@ -44,7 +44,7 @@ class MemoryDao(AbstractDao):
 
   # Admin Config
 
-  async def enable_channel(self, server_id, channel_id):
+  async def enable_channel(self, server_id: int, channel_id: int):
     self.create_server_entry_if_nonexistent(server_id)
     if channel_id not in self.server_configs[server_id].enabled_channels:
       # not enabled yet
@@ -54,7 +54,7 @@ class MemoryDao(AbstractDao):
       # already enabled
       return None
 
-  async def disable_channel(self, server, channel_id):
+  async def disable_channel(self, server: int, channel_id: int):
     self.create_server_entry_if_nonexistent(server)
     if channel_id in self.server_configs[server].enabled_channels:
       # enabled; remove
@@ -64,7 +64,7 @@ class MemoryDao(AbstractDao):
       # already disabled
       return None
 
-  async def change_despawn_time(self, server_id, new_despawn_time):
+  async def change_despawn_time(self, server_id: int, new_despawn_time: int):
     self.create_server_entry_if_nonexistent(server_id)
     if new_despawn_time < 0:
       return None
@@ -72,7 +72,7 @@ class MemoryDao(AbstractDao):
       self.server_configs[server_id].despawn_time = new_despawn_time
       return new_despawn_time
 
-  async def change_spawn_rate(self, server_id, new_spawn_rate):
+  async def change_spawn_rate(self, server_id: int, new_spawn_rate: int):
     self.create_server_entry_if_nonexistent(server_id)
     if new_spawn_rate < 0 or new_spawn_rate > 100:
       return None
@@ -83,7 +83,7 @@ class MemoryDao(AbstractDao):
 
   # User Interactions
 
-  async def get_leaderboard(self, server_id, num_results, page):
+  async def get_leaderboard(self, server_id: int, num_results, page):
     self.create_server_entry_if_nonexistent(server_id)
     pass
 
@@ -99,19 +99,19 @@ class MemoryDao(AbstractDao):
 
   # Spawn/Item Interactions
 
-  async def add_item_to_player(self, server_id, player_id, item):
+  async def add_item_to_player(self, server_id: int, player_id: int, item_id: str):
     self.create_server_entry_if_nonexistent(server_id)
     self.create_player_entry_if_nonexistent(server_id, player_id)
-    if item not in self.server_players[server_id][player_id].inventory:
-      self.server_players[server_id][player_id].inventory.append(item)
+    if item_id not in self.server_players[server_id][player_id].inventory:
+      self.server_players[server_id][player_id].inventory.append(item_id)
       self.server_players[server_id][player_id].score += 1
-      return item
+      return item_id
     else:
       # player already has item
       return None
 
 
-  async def replace_player_item_with_coal(self, server_id, player_id):
+  async def replace_player_item_with_coal(self, server_id: int, player_id: int):
     self.create_server_entry_if_nonexistent(server_id)
     self.create_player_entry_if_nonexistent(server_id, player_id)
     self.server_players[server_id][player_id].coal_count += 1
