@@ -1,13 +1,13 @@
 from constants.messages import HELP_MESSAGE
 from daos import get_dao
-from helpers.user import format_inventory
+from helpers.user import format_inventory, format_leaderboard
 
 
-async def handle_help(message, tokens: list[str]):
+async def handle_help(message, tokens: list[str], bot):
   await message.channel.send(embed=HELP_MESSAGE)
 
 
-async def handle_inventory(message, tokens: list[str]):
+async def handle_inventory(message, tokens: list[str], bot):
   dao = get_dao()
   server_id = message.guild.id
   author_profile = await dao.get_player(server_id, message.author.id)
@@ -18,12 +18,15 @@ async def handle_inventory(message, tokens: list[str]):
   await message.channel.send(embed=response)
 
 
-async def handle_leaderboard(message, tokens: list[str]):
-  response = 'leaderboard placeholder'
-  await message.channel.send(response) 
+async def handle_leaderboard(message, tokens: list[str], bot):
+  dao = get_dao()
+  leader_board = await dao.get_leaderboard(message.guild.id, None, None, bot)
+  print('leaderboard', leader_board)
+  response = format_leaderboard(leader_board)
+  await message.channel.send(embed=response)
 
 
-async def handle_tree(message, tokens: list[str]):
+async def handle_tree(message, tokens: list[str], bot):
   response = 'tree placeholder'
   await message.channel.send(response) 
 

@@ -1,5 +1,6 @@
 import random
 
+from operator import itemgetter
 from daos.abstract_dao import AbstractDao
 
 from dtos.creature import CreatureDto
@@ -16,8 +17,10 @@ class MemoryDao(AbstractDao):
         'https://i.imgur.com/MBmsrHG.png', 'nice', 
         ['gumdrop_ornament', 'iced_bowtie']),
       'naughty_gingy': CreatureDto('naughty_gingy', 'Naughty Gingy', 'he', 
-        'https://i.imgur.com/1CnajlU.png', 'naughty', ['dash_of_cinnamon', 'iced_bowtie'])
+        'https://i.imgur.com/1CnajlU.png', 'naughty',
+        ['dash_of_cinnamon', 'iced_bowtie'])
     }
+
     self.items: dict[str, ItemDto] = {
       'gumdrop_ornament': ItemDto('gumdrop_ornament', 'Gumdrop Ornament', 
         ItemRarity.RARE, 'https://i.imgur.com/1CnajlU.png'),
@@ -83,9 +86,13 @@ class MemoryDao(AbstractDao):
 
   # User Interactions
 
-  async def get_leaderboard(self, server_id: int, num_results, page):
-    self.create_server_entry_if_nonexistent(server_id)
-    pass
+  async def get_leaderboard(self, server, num_results, page, bot):
+    leader_board = {}
+    self.create_server_entry_if_nonexistent(server)
+    for player_id in self.server_players[server].keys():  # for player in dict
+      usr = await bot.fetch_user(player_id)
+      leader_board[usr.name] = len(self.server_players[server][player_id].inventory)
+    return leader_board
 
   async def get_player(self, server_id, player_id):
     self.create_server_entry_if_nonexistent(server_id)

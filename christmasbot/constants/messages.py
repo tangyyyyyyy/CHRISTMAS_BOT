@@ -30,13 +30,18 @@ NICE_INCORRECT = ('Wrong, as usual... It was a naughty {creature_name}. Oh no! {
       'thinks your mistake was an act of deception! In spite, {creature_pronoun} replaces '
       'your {replaced_item} with coal! Serves you right. ')
 
+UNKNOWN_SPAWN = ('A silhouette has appeared! From the\n'
+                 'looks of it, it seems quite {status}.\n'
+                 'Type *x!{status}* to identify the creature!')
+
 HELP_MESSAGE = discord.Embed(
   title='Christmas Command List',
-  description=('After watching the Halloween creatures from afar, the '
+  description=('After watching the Halloween creatures come from afar, the '
                 'Christmas creatures have decided to visit and leave presents '
                 'behind! Identify whether the creatures are nice or naughty '
                 'with the right command when they come and collect items to '
-                'become your server\'s Chamption of Christmas!'),
+                'become your server\'s Champion of Christmas! Collect all the '
+                'rare ornaments and something special might happen...'),
   color=discord.Colour(ChristmasColor.GOLD)
 ).set_author(
   name='Christmas Bot',

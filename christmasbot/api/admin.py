@@ -3,7 +3,7 @@ from daos import get_dao
 from helpers.admin import format_bad_command_response, format_no_permissions_response, is_user_admin
 
 
-async def handle_enable_channel(message, tokens: list[str]):
+async def handle_enable_channel(message, tokens: list[str], bot):
   if len(tokens) > 1:
     response = format_bad_command_response(message.author)
   elif not is_user_admin(message.author, message.channel):
@@ -17,7 +17,7 @@ async def handle_enable_channel(message, tokens: list[str]):
   await message.channel.send(embed=response) 
   
 
-async def handle_disable_channel(message, tokens: list[str]):
+async def handle_disable_channel(message, tokens: list[str], bot):
   if len(tokens) > 1:
     response = format_bad_command_response(message.author)
   elif not is_user_admin(message.author, message.channel):
@@ -31,7 +31,7 @@ async def handle_disable_channel(message, tokens: list[str]):
   await message.channel.send(embed=response) 
 
 
-async def handle_change_despawn_time(message, tokens):
+async def handle_change_despawn_time(message, tokens, bot):
   if len(tokens) > 2:
     return BAD_COMMAND_MESSAGE
   new_despawn_time = -1
@@ -48,7 +48,7 @@ async def handle_change_despawn_time(message, tokens):
   await message.channel.send(response) 
 
 
-async def handle_change_spawn_rate(message, tokens: list[str]):
+async def handle_change_spawn_rate(message, tokens: list[str], bot):
   if len(tokens) > 2:
     return BAD_COMMAND_MESSAGE
   new_spawn_rate = -1
@@ -65,7 +65,7 @@ async def handle_change_spawn_rate(message, tokens: list[str]):
   await message.channel.send(response) 
 
 
-async def handle_refresh_role(message, tokens: list[str]):
+async def handle_refresh_role(message, tokens: list[str], bot):
   response = 'Refresh role placeholder'
   await message.channel.send(response) 
 
