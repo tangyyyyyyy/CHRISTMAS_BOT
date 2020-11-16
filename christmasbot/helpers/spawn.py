@@ -86,7 +86,6 @@ def remove_ongoing_spawn(server_id: int, channel_id: int):
 
 
 def create_creature_message(creature: CreatureDto):
-    print('current dir=', getcwd())
     return discord.Embed(
       title=CREATURE_SPAWN_TITLE,
       description=format_spawn_description(creature),
@@ -103,7 +102,6 @@ def create_blob_message(creature: CreatureDto):
   ).set_image(
     url='https://i.imgur.com/3SdgfhJ.png'
   )
-
 
 def create_timeout_message():
   return discord.Embed(
