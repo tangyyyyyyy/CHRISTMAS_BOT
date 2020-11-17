@@ -4,7 +4,7 @@ It’s a frosty winter night. As you warm up by the fire, you hear a faint jingl
 
 ## Setting Up
 
-- Make sure your Python version is 3.8 or higher.
+- Make sure your Python version is 3.9 or higher.
 - If you don't have Poetry already install Poetry
 - Run `poetry install`
 - Run `poetry run python christmasbot/main.py` (if this doesn't work try replacing 
@@ -38,3 +38,8 @@ It’s a frosty winter night. As you warm up by the fire, you hear a faint jingl
 ### helpers
 
 - response_formatter.py: contains text-formatting functions for response
+
+## Infrastructure
+
+To run this, besides a VPS/EC2 instance/computer to run the bot, there is a PostgresSQL
+DAO that can be used to store player scores. Currently, it stores data based on individual DTOs.
