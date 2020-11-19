@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 DISCORD_CLIENT_ID = '773308497538056222'
-DISCORD_TOKEN = 'rawrxDhaha'
+DISCORD_TOKEN = 'rawrxdhaHA'
 
 BLOB_URL = 'https://i.imgur.com/3SdgfhJ.png'
 

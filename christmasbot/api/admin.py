@@ -1,6 +1,7 @@
-from constants.messages import ADMIN_DISABLE_RESPONSE, ADMIN_ENABLE_RESPONSE, BAD_COMMAND_MESSAGE
+import discord
+from constants.messages import ADMIN_DISABLE_RESPONSE, ADMIN_ENABLE_RESPONSE, BAD_COMMAND_MESSAGE, ROLE_REFRESH_RESPONSE
 from daos import get_dao
-from helpers.admin import format_bad_command_response, format_no_permissions_response, is_user_admin
+from helpers.admin import format_bad_command_response, format_no_permissions_response, format_spawn_rate, is_user_admin
 
 
 async def handle_enable_channel(message, tokens: list[str], bot):
@@ -61,13 +62,26 @@ async def handle_change_spawn_rate(message, tokens: list[str], bot):
     response = BAD_COMMAND_MESSAGE
   else:
     print('Spawn rate changed to {}'.format(new_spawn_rate))
-    response = 'I changed the spawn rate to {}%!'.format(new_spawn_rate)
-  await message.channel.send(response) 
+    response = format_spawn_rate(new_spawn_rate)
+  await message.channel.send(embed=response)
 
 
 async def handle_refresh_role(message, tokens: list[str], bot):
-  response = 'Refresh role placeholder'
-  await message.channel.send(response) 
+  guild = message.guild
+  dao = get_dao()
+
+  response = ROLE_REFRESH_RESPONSE
+
+  if discord.utils.get(guild.roles, name='Champion of Christmas'):
+    print('Role exists...')
+    return
+
+  role = await guild.create_role(reason='Refreshing Champion of Christmas role...', name="Champion of Christmas", hoist=True, mentionable=True)
+  champ_id = await dao.give_champion_role(guild.id, message.author.id)
+  champ = await guild.fetch_member(champ_id)
+
+  await champ.add_roles(discord.utils.get(champ.guild.roles, name=role))
+  await message.channel.send(embed=response)
 
 
 ADMIN_COMMAND_LIST = {

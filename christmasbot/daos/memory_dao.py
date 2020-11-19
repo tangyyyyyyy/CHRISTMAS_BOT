@@ -91,6 +91,7 @@ class MemoryDao(AbstractDao):
     self.create_server_entry_if_nonexistent(server)
     for player_id in self.server_players[server].keys():  # for player in dict
       usr = await bot.fetch_user(player_id)
+      print('score', self.server_players[server][player_id].score)
       leader_board[usr.name] = len(self.server_players[server][player_id].inventory)
     return leader_board
 
@@ -163,3 +164,10 @@ class MemoryDao(AbstractDao):
       return self.items[item_id]
     else:
       raise Exception('Item {} does not exist!'.format(item_id))
+
+  async def give_champion_role(self, server_id: int, player_id: int):
+    self.create_server_entry_if_nonexistent(server_id)
+    self.create_player_entry_if_nonexistent(server_id, player_id)
+    player_list = self.server_players[server_id].values()
+    champ = max(player_list, key=lambda item: item.score)
+    return champ.player_id

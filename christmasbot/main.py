@@ -62,7 +62,7 @@ class ChristmasBot(discord.Client):
           def message_is_nice_or_naughty(message):
             return (message.guild.id == server_id and message.channel.id == channel_id
               and (message.content == 'x!nice' or message.content == 'x!naughty'))
-          
+
           try:
             reply = await self.wait_for('message', 
               check=message_is_nice_or_naughty, 

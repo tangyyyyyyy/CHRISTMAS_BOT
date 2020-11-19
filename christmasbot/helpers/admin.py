@@ -30,3 +30,14 @@ def format_bad_command_response(user):
     icon_url='https://i.imgur.com/YZ6v1jw.png',
     url='https://github.com/tangyyyyyyy/CHRISTMAS_BOT'
   )
+
+def format_spawn_rate(new_rate):
+  return discord.Embed(
+    title=BAD_COMMAND_MESSAGE_TITLE,
+    description='Spawn rate changed to {}'.format(new_rate),
+    color=discord.Colour(ChristmasColor.RED)
+  ).set_author(
+    name='Christmas Bot',
+    icon_url='https://i.imgur.com/YZ6v1jw.png',
+    url='https://github.com/tangyyyyyyy/CHRISTMAS_BOT'
+  )
