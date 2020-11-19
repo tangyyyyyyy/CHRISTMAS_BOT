@@ -42,5 +42,5 @@ def format_leaderboard(leaderboard: list[tuple[str, PlayerDto]]):
 
 
 async def get_player_name(player: PlayerDto, bot):
-  user = bot.get_user(player.player_id)
+  user = await bot.fetch_user(player.player_id)
   return '{}#{}'.format(user.name, user.discriminator)

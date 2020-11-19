@@ -100,7 +100,18 @@ class DbDao(AbstractDao):
   # User Interactions
 
   async def get_leaderboard(self, server_id: int, num_results: int, set_num: int) -> list[PlayerDto]:
-    return []
+    session = get_session()
+    server = self.create_server_entry_if_nonexistent(session, server_id)
+    if num_results <= 0 or set_num < 0:
+      return []
+    leaderboard = session.query(players_table).filter(
+      players_table.c.server_id == server_id
+    ).order_by(
+      players_table.c.score.desc(), 
+      players_table.c.coal_count.asc()
+    ).limit(num_results).offset(set_num * num_results).all()
+    print(leaderboard)
+    return leaderboard
 
 
   async def get_player(self, server_id: int, player_id: int) -> PlayerDto:
