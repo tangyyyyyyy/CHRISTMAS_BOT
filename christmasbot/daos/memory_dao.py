@@ -52,17 +52,17 @@ class MemoryDao(AbstractDao):
     if channel_id not in self.server_configs[server_id].enabled_channels:
       # not enabled yet
       self.server_configs[server_id].enabled_channels.append(channel_id)
-      return channel_id
+      return self.server_configs[server_id]
     else:
       # already enabled
       return None
 
-  async def disable_channel(self, server: int, channel_id: int):
-    self.create_server_entry_if_nonexistent(server)
-    if channel_id in self.server_configs[server].enabled_channels:
+  async def disable_channel(self, server_id: int, channel_id: int):
+    self.create_server_entry_if_nonexistent(server_id)
+    if channel_id in self.server_configs[server_id].enabled_channels:
       # enabled; remove
-      self.server_configs[server].enabled_channels.remove(channel_id)
-      return channel_id
+      self.server_configs[server_id].enabled_channels.remove(channel_id)
+      return self.server_configs[server_id]
     else:
       # already disabled
       return None
@@ -73,7 +73,7 @@ class MemoryDao(AbstractDao):
       return None
     else:
       self.server_configs[server_id].despawn_time = new_despawn_time
-      return new_despawn_time
+      return self.server_configs[server_id]
 
   async def change_spawn_rate(self, server_id: int, new_spawn_rate: int):
     self.create_server_entry_if_nonexistent(server_id)
@@ -81,7 +81,7 @@ class MemoryDao(AbstractDao):
       return None
     else:
       self.server_configs[server_id].spawn_rate_percent = new_spawn_rate
-      return new_spawn_rate
+      return self.server_configs[server_id]
 
 
   # User Interactions
@@ -122,25 +122,25 @@ class MemoryDao(AbstractDao):
     if item_id not in self.server_players[server_id][player_id].inventory:
       self.server_players[server_id][player_id].inventory.append(item_id)
       self.server_players[server_id][player_id].score += 1
-      return item_id
+      return self.server_players[server_id][player_id]
     else:
       # player already has item
       return None
 
 
-  async def replace_player_item_with_coal(self, server_id: int, player_id: int):
+  async def replace_player_item_with_coal(self, server_id: int, player_id: int, item_id: str):
     self.create_server_entry_if_nonexistent(server_id)
     self.create_player_entry_if_nonexistent(server_id, player_id)
     self.server_players[server_id][player_id].coal_count += 1
-    if len(self.server_players[server_id][player_id].inventory) > 0:
+    if item_id == '':
+      return None
+    elif len(self.server_players[server_id][player_id].inventory) > 0:
       # player has at least 1 item, replace it!
-      inventory_size = len(self.server_players[server_id][player_id].inventory)
-      index_to_remove = random.randrange(inventory_size)
-      removed_item = self.server_players[server_id][player_id].inventory.pop(index_to_remove)
+      self.server_players[server_id][player_id].inventory.remove(item_id)
       self.server_players[server_id][player_id].score -= 1
-      return removed_item
+      return self.server_players[server_id][player_id]
     else:
-      # player has no items
+      # player has no items, kept for redundancy
       return None
 
 

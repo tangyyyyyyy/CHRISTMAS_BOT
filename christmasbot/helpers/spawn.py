@@ -1,4 +1,3 @@
-from os import getcwd
 import random
 
 import discord
@@ -126,13 +125,14 @@ async def create_bot_response(is_correct_reply: bool, user_message, creature: Cr
   server_id = user_message.guild.id
   player_id = user_message.author.id
   dao = get_dao()
+
+  player = await dao.get_player(server_id, player_id)
   
   if is_correct_reply:
     title = CREATURE_IDENTIFIED_TITLE
     color = ChristmasColor.GREEN
     item = await get_random_item(creature)
 
-    player = await dao.get_player(server_id, player_id)
     if item.id in player.inventory:
       description = 'You already had that item :('
     else:
@@ -148,18 +148,23 @@ async def create_bot_response(is_correct_reply: bool, user_message, creature: Cr
     title = CREATURE_MISIDENTIFIED_TITLE
     color = ChristmasColor.RED
     # replace it with coal if you have an item
-    popped_item_id = await dao.replace_player_item_with_coal(server_id, player_id)
-    if popped_item_id is not None:      
-      item = await dao.get_item(popped_item_id)
+    if len(player.inventory) == 0:
+      # player has empty inventory
+      description = '{} tried to replace one of your items with coal, but your inventory is empty. ' \
+                      'Maybe coal isn\'t so bad after all...'.format(creature.display_name) 
+      await dao.replace_player_item_with_coal(server_id, player_id, '')
+    else:    
+      # get random item from user
+      item_id = random.choice(player.inventory)
+      item = await dao.get_item(item_id)
+      await dao.replace_player_item_with_coal(server_id, player_id, item_id)
       if creature.status == 'nice': 
           description = format_incorrect_nice_response(creature, item)
       elif creature.status == 'naughty':
           description = format_incorrect_naughty_response(creature, item)
       else:
         raise Exception('Creature was neither nice or naughty!')
-    else:
-      description = '{} tried to replace one of your items with coal, but your inventory is empty. ' \
-                      'Maybe coal isn\'t so bad after all...'.format(creature.display_name) 
+      
   return discord.Embed(
     title=title,
     description=description,

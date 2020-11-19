@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Union
 
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto
@@ -10,7 +11,7 @@ class AbstractDao(ABC):
   # Admin Config
 
   @abstractmethod
-  async def enable_channel(self, server_id: int, channel_id: int):
+  async def enable_channel(self, server_id: int, channel_id: int) -> Union[ServerConfigDto, None]:
     """ Enables a channel for the bot to spawn creaatures.
 
     TODO enable multiple channels
@@ -19,12 +20,12 @@ class AbstractDao(ABC):
     - server_id (int): the discord ID of the server
     - channel_id (int): the discord ID of the channel
 
-    Returns channel if successfully enabled and None if it was already enabled.
+    Returns server that was changed if successfully enabled and None if it was already enabled.
     """
     pass
 
   @abstractmethod
-  async def disable_channel(self, server_id: int, channel_id: int):
+  async def disable_channel(self, server_id: int, channel_id: int) -> Union[ServerConfigDto, None]:
     """ Enables a channel for the bot to spawn creaatures
 
     TODO disable multiple channels
@@ -33,31 +34,31 @@ class AbstractDao(ABC):
     - server_id (int): the discord ID of the server
     - channel_id (int): the discord ID of the channel
 
-    Returns channel if successfully disabled and None if it is already disabled.
+    Returns server that was changed if successfully disabled and None if it is already disabled.
     """
     pass
   
   @abstractmethod
-  async def change_despawn_time(self, server_id: int, new_despawn_time: int):
+  async def change_despawn_time(self, server_id: int, new_despawn_time: int) -> Union[ServerConfigDto, None]:
     """ Enables a channel for the bot to spawn creaatures
 
     Parameters:
     - server_id (int): the discord ID of the server
     - new_despawn_time (int): the new despawn time in seconds
 
-    Returns new_despawn_time if successfully changed and None new_desoawn_time <= 0.
+    Returns server that was changed if successfully changed and None new_desoawn_time <= 0.
     """
     pass
 
   @abstractmethod
-  async def change_spawn_rate(self, server_id: int, new_spawn_rate: int):
+  async def change_spawn_rate(self, server_id: int, new_spawn_rate: int) -> Union[ServerConfigDto, None]:
     """ Enables a channel for the bot to spawn creaatures
 
     Parameters:
     - server_id (int): the discord ID of the server
     - new_spawn_rate (int): the new despawn time in seconds
 
-    Returns new_spawn_rate if successfully changed and None if not !(0 <= new_spawn_rate <= 100).
+    Returns server that was changed if if successfully changed and None if not !(0 <= new_spawn_rate <= 100).
     """
     pass
 
@@ -103,7 +104,7 @@ class AbstractDao(ABC):
   # Spawn/Item Interactions
 
   @abstractmethod
-  async def add_item_to_player(self, server_id: int, player_id: int, item_id: str):
+  async def add_item_to_player(self, server_id: int, player_id: int, item_id: str) -> Union[PlayerDto, None]:
     """Adds an item to the user's inventory. If the user doesn't exist, creates it.
 
     Parameters:
@@ -111,12 +112,12 @@ class AbstractDao(ABC):
     - player_id (int): the discord ID of the player
     - item (str): the unique ID of an item
 
-    Returns item if successful and None if player already has item
+    Returns player if successful and None if player already has item
     """
     pass
 
   @abstractmethod
-  async def replace_player_item_with_coal(self, server_id: int, player_id: int):
+  async def replace_player_item_with_coal(self, server_id: int, player_id: int, item_id: str) -> Union[PlayerDto, None]:
     """ Replaces one of the player's items with coal randomly.
     If the user doesn't exist or has an empty inventory, no items are removed but 1 coal is added.
     TODO make this based on rarity of items
@@ -124,8 +125,10 @@ class AbstractDao(ABC):
     Parameters:
     - server_id (int): the discord ID of the server
     - player_id (int): the discord ID of the player
+    - item_id (str): id of item to be removed. pass in an empty string for 
+      nothing to be removed but coal count to be incremented.
 
-    Returns the item if an item is removed, and None if no items were removed
+    Returns (item, player) if an item is removed, and None if no items were removed
     """
     pass
 

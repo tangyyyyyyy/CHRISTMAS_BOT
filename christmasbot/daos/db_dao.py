@@ -50,7 +50,7 @@ class DbDao(AbstractDao):
       )
       session.execute(update_stmt)
       session.commit()
-      return channel_id
+      return server
     else:
       return None
 
@@ -64,7 +64,7 @@ class DbDao(AbstractDao):
       )
       session.execute(update_stmt)
       session.commit()
-      return channel_id
+      return server
     else:
       return None
    
@@ -80,7 +80,7 @@ class DbDao(AbstractDao):
       )
       session.execute(update_stmt)
       session.commit()
-      return new_despawn_time
+      return server
 
 
   async def change_spawn_rate(self, server_id: int, new_spawn_rate: int):
@@ -94,7 +94,7 @@ class DbDao(AbstractDao):
       )
       session.execute(update_stmt)
       session.commit()
-      return new_spawn_rate
+      return server
 
 
   # User Interactions
@@ -110,7 +110,6 @@ class DbDao(AbstractDao):
       players_table.c.score.desc(), 
       players_table.c.coal_count.asc()
     ).limit(num_results).offset(set_num * num_results).all()
-    print(leaderboard)
     return leaderboard
 
 
@@ -158,23 +157,21 @@ class DbDao(AbstractDao):
       # A transaction is guaranteed because of the update statement, no needd
       # to account for exceptions
       session.commit()
-      return item_id
+      return player
     else:
       # we don't need to commit anything here because if a player already has an
       # item, then it cannot be just created and thus there's nothing to commit
       return None
 
 
-  async def replace_player_item_with_coal(self, server_id: int, player_id: int):
+  async def replace_player_item_with_coal(self, server_id: int, player_id: int, item_id: str):
     session = get_session()
     self.create_server_entry_if_nonexistent(session, server_id)
     player = self.create_player_entry_if_nonexistent(session, server_id, player_id)
     if len(player.inventory) > 0:
       # player's inventory is not empty, replace an item
       # TODO make this based on rarity
-      inventory_size = len(player.inventory)
-      index_to_remove = random.randrange(inventory_size)
-      removed_item = player.inventory.pop(index_to_remove)
+      player.inventory.remove(item_id)
       update_stmt = players_table.update().where(
         players_table.c.server_id == server_id
       ).where(
@@ -186,7 +183,7 @@ class DbDao(AbstractDao):
       )
       session.execute(update_stmt)
       session.commit()
-      return removed_item
+      return player
     else:
       # player's inventory is empty
       # there's a chance that player was just created so we need to commit
