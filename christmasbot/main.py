@@ -69,10 +69,10 @@ class ChristmasBot(discord.Client):
               timeout=server_config.despawn_time
             )
 
+            await reply.delete(delay=0.5)
             is_correct_reply = check_if_command_correct(reply, creature)
             bot_response = await create_bot_response(is_correct_reply, reply, creature)
             
-            await reply.delete(delay=5)
           except asyncio.TimeoutError:
             bot_response = create_timeout_message()
           finally:

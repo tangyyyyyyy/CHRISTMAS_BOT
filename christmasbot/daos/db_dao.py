@@ -99,18 +99,8 @@ class DbDao(AbstractDao):
 
   # User Interactions
 
-  async def get_leaderboard(self, server_id: int, num_results: int, page: int):
-    """ Gets a list of players for server sorted by score
-    TODO add sorting by most recent acquired item time
-
-    Parameters:
-    - server_id (int): the discord ID of the server
-    - num_results (int): the number of results to get
-    - page (int): the page of results
-
-    Returns sorted list of players if successful and None if num_results <= 0 or page <= 0.
-    """
-    pass
+  async def get_leaderboard(self, server_id: int, num_results: int, set_num: int) -> list[PlayerDto]:
+    return []
 
 
   async def get_player(self, server_id: int, player_id: int) -> PlayerDto:
