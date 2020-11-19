@@ -1,6 +1,6 @@
 from constants.messages import HELP_MESSAGE
 from daos import get_dao
-from helpers.user import format_inventory, format_leaderboard
+from helpers.user import format_inventory, format_leaderboard, get_player_name
 
 
 async def handle_help(message, tokens: list[str], bot):
@@ -20,9 +20,9 @@ async def handle_inventory(message, tokens: list[str], bot):
 
 async def handle_leaderboard(message, tokens: list[str], bot):
   dao = get_dao()
-  leader_board = await dao.get_leaderboard(message.guild.id, None, None, bot)
-  print('leaderboard', leader_board)
-  response = format_leaderboard(leader_board)
+  leaderboard = await dao.get_leaderboard(message.guild.id, 5, 0)
+  leaderboard_with_names = [(await get_player_name(player, bot), player) for player in leaderboard]
+  response = format_leaderboard(leaderboard_with_names)
   await message.channel.send(embed=response)
 
 

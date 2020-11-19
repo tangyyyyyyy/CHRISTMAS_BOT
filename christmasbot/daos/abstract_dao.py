@@ -64,16 +64,16 @@ class AbstractDao(ABC):
   # User Interactions
 
   @abstractmethod
-  async def get_leaderboard(self, server_id: int, num_results: int, page: int):
+  async def get_leaderboard(self, server_id: int, num_results: int, set_num: int) -> list[PlayerDto]:
     """ Gets a list of players for server sorted by score
     TODO add sorting by most recent acquired item time
 
     Parameters:
     - server_id (int): the discord ID of the server
     - num_results (int): the number of results to get
-    - page (int): the page of results
+    - set_num (int): the set number to pull from results (like page num, but 0 indexed)
 
-    Returns sorted list of players if successful and None if num_results <= 0 or page <= 0.
+    Returns sorted list of players if successful and an empty list if num_results <= 0 or set_num < 0.
     """
     pass
 

@@ -1,12 +1,12 @@
+from operator import attrgetter
 import random
 
-from operator import itemgetter
 from daos.abstract_dao import AbstractDao
-
 from dtos.creature import CreatureDto
 from dtos.item import ItemDto, ItemRarity
 from dtos.player import PlayerDto
 from dtos.server_config import ServerConfigDto
+
 
 class MemoryDao(AbstractDao):
   def __init__(self):
@@ -86,20 +86,30 @@ class MemoryDao(AbstractDao):
 
   # User Interactions
 
-  async def get_leaderboard(self, server, num_results, page, bot):
-    leader_board = {}
-    self.create_server_entry_if_nonexistent(server)
-    for player_id in self.server_players[server].keys():  # for player in dict
-      usr = await bot.fetch_user(player_id)
-      leader_board[usr.name] = len(self.server_players[server][player_id].inventory)
-    return leader_board
+  async def get_leaderboard(self, server_id: int, num_results: int, set_num: int):
+    self.create_server_entry_if_nonexistent(server_id)
+    if num_results <= 0 or set_num < 0:
+      return []
+    leaderboard_unsorted = [player for player in self.server_players[server_id].values()]
+    # first sorts by lowest coal count first
+    leaderboard_by_coal_count = sorted(leaderboard_unsorted, key=attrgetter('coal_count'))
+    # then sort by highest score first
+    leaderboard_sorted = sorted(leaderboard_by_coal_count, key=attrgetter('score'), reverse=True)
 
-  async def get_player(self, server_id, player_id):
+    end_index = num_results * (set_num + 1)
+    if end_index > len(leaderboard_sorted):
+      end_index = len(leaderboard_sorted)
+    start_index = end_index - num_results
+    if start_index < 0:
+      start_index = 0
+    return leaderboard_sorted[start_index:end_index]
+
+  async def get_player(self, server_id: int, player_id: int):
     self.create_server_entry_if_nonexistent(server_id)
     self.create_player_entry_if_nonexistent(server_id, player_id)
     return self.server_players[server_id][player_id]
 
-  async def get_server(self, server_id):
+  async def get_server(self, server_id: int):
     self.create_server_entry_if_nonexistent(server_id)
     return self.server_configs[server_id]
 
