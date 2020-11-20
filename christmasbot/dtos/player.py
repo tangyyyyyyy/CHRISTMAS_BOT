@@ -6,3 +6,13 @@ class PlayerDto:
     self.inventory = inventory #list of items
     self.coal_count = coal_count
     self.score = len(inventory)
+
+  @classmethod
+  def new(cls, player: 'PlayerDto'):
+    return PlayerDto(
+      server_id=player.server_id,
+      player_id=player.player_id,
+      inventory=player.inventory,
+      coal_count=player.coal_count,
+      score=player.score
+    )

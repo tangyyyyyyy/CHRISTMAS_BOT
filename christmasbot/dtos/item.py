@@ -15,4 +15,13 @@ class ItemDto:
     self.id = item_id
     self.display_name = display_name
     self.img_url = img_url
-    self.rarity = rarity # can be converted to int if needed
+    self.rarity = ItemRarity(rarity) # can be converted to int if needed
+
+  @classmethod
+  def new(cls, item: 'ItemDto'):
+    return ItemDto(
+      item_id=item.id,
+      display_name=item.display_name,
+      rarity=item.rarity,
+      img_url=item.img_url
+    )

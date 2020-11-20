@@ -7,3 +7,14 @@ class CreatureDto:
     self.status = status #naughty, either, nice
     self.pronoun = pronoun
     self.items = items
+
+  @classmethod
+  def new(cls, creature: 'CreatureDto'):
+    return CreatureDto(
+      creature_id=creature.id,
+      display_name=creature.display_name,
+      pronoun=creature.pronoun,
+      img_url=creature.img_url,
+      status=creature.status,
+      items=creature.items
+    )
