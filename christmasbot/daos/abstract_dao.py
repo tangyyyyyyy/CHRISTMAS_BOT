@@ -172,3 +172,15 @@ class AbstractDao(ABC):
     Returns list[item dtos] or throws an exception if any item doesn't exist.
     """
     pass
+
+  @abstractmethod
+  async def get_champion(self, server_id: int, player_id: int) -> int:
+    """ Gets player who should have champion of christmas tag
+
+    Parameters:
+    - server_id (int): the discord ID of the server
+    - player_id (int): the discord ID of the player
+
+    Returns player ID (int)
+    """
+    pass

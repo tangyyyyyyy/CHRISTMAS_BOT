@@ -96,6 +96,16 @@ ADMIN_NO_PERMISSIONS_TITLE = ('Only admins can use this command!')
 ADMIN_NO_PERMISSIONS_DESCRIPTION = ('{user_mention}, you do not have sufficient '
   'permissions to do this.')
 
+ROLE_REFRESH_RESPONSE = discord.Embed(
+  title='Champion of Christmas role refreshed!',
+  description='Someone should be crowned Champion of Christmas!',
+  color=discord.Colour(ChristmasColor.GREEN)
+).set_author(
+  name='Christmas Bot',
+  icon_url='https://i.imgur.com/YZ6v1jw.png',
+  url='https://github.com/tangyyyyyyy/CHRISTMAS_BOT'
+)
+
 ADMIN_ENABLE_RESPONSE = discord.Embed(
   title='Christmas Bot is enabled on this channel!',
   description='Christmas creatures will now come here!',

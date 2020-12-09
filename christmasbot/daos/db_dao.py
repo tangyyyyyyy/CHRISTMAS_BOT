@@ -235,4 +235,15 @@ class DbDao(AbstractDao):
       raise Exception('An item within {} does not exist!'.format(str(item_ids)))
     else:
       return items
-  
+
+  async def get_champion(self, server_id: int, player_id: int):
+    session = get_session()
+    self.create_server_entry_if_nonexistent(session, server_id)
+    self.create_player_entry_if_nonexistent(session, server_id, player_id)
+    champ = session.query(players_table).filter(
+      players_table.c.server_id == server_id
+    ).order_by(
+      players_table.c.score.desc(),
+      players_table.c.coal_count.asc()
+    ).limit(1).all()
+    return champ[0][1]

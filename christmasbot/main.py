@@ -35,6 +35,7 @@ class ChristmasBot(discord.Client):
     server_id = message.guild.id
     channel_id = message.channel.id
     player_id = message.author.id
+    guild = message.guild
     
     response = 'Placeholder message - you shouldn\'t be seeing this'
     if command in self.command_list.keys():
@@ -62,17 +63,28 @@ class ChristmasBot(discord.Client):
           def message_is_nice_or_naughty(message):
             return (message.guild.id == server_id and message.channel.id == channel_id
               and (message.content == 'x!nice' or message.content == 'x!naughty'))
-          
+
           try:
             reply = await self.wait_for('message', 
               check=message_is_nice_or_naughty, 
               timeout=server_config.despawn_time
             )
 
+            old_champ_id = await dao.get_champion(server_id, player_id)
             await reply.delete(delay=0.5)
             is_correct_reply = check_if_command_correct(reply, creature)
             bot_response = await create_bot_response(is_correct_reply, reply, creature)
-            
+            if discord.utils.get(guild.roles, name='Champion of Christmas'):
+              #reassign champion of christmas role if exists
+              role = discord.utils.get(guild.roles, name='Champion of Christmas')
+              champ_id = await dao.get_champion(server_id, player_id)
+              if champ_id != old_champ_id:
+                old_champ = await guild.fetch_member(old_champ_id)
+                champ = await guild.fetch_member(champ_id)
+                print('New champ has been crowned!')
+                await old_champ.remove_roles(role)
+                await champ.add_roles(role)
+
           except asyncio.TimeoutError:
             bot_response = create_timeout_message()
           finally:

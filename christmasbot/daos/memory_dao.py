@@ -173,3 +173,12 @@ class MemoryDao(AbstractDao):
       return self.items[item_id]
     else:
       raise Exception('Item {} does not exist!'.format(item_id))
+
+  async def get_champion(self, server_id: int, player_id: int):
+    self.create_server_entry_if_nonexistent(server_id)
+    self.create_player_entry_if_nonexistent(server_id, player_id)
+    player_list = self.server_players[server_id].values()
+    print('playerlist', player_list)
+    champ = max(player_list, key=lambda item: item.score)
+    print('champ', champ)
+    return champ.player_id
